@@ -1,6 +1,18 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+//Helper functions for calculating statistics:
+//Used with Statistics component version and table version
+const division = (a, b) => {
+  if(b === 0) return 0
+  return a/b 
+}
+
+const getPercent = (value) => {
+  return value * 100 + ' %'
+}
+
+//Components
 const Button = ({onClick, text}) => {
   return (
     <button onClick={onClick}>
@@ -9,7 +21,9 @@ const Button = ({onClick, text}) => {
   )
 }
 
-const Label = ({parameter, value}) => {
+//Following two components can be used instead of the HTML table
+//Currently unused
+const Statistic = ({parameter, value}) => {
   return (
     <div>
       {parameter} {value}
@@ -17,16 +31,8 @@ const Label = ({parameter, value}) => {
   )  
 }
 
+//Unused due to table implementtion
 const Statistics = ({good, neutral, bad, all, sum}) => {
-
-  const division = (a, b) => {
-    if(b === 0) return 0
-    return a/b 
-  }
-
-  const getPercent = (value) => {
-    return value * 100 + ' %'
-  }
 
   if(all === 0) return( 
     <div>
@@ -34,15 +40,14 @@ const Statistics = ({good, neutral, bad, all, sum}) => {
     </div>
   )
 
-
   return (
     <div>
-      <Label parameter={'good'} value={good} />
-      <Label parameter={'neutral'} value={neutral} />
-      <Label parameter={'bad'} value={bad} />
-      <Label parameter={'all'} value={all} />
-      <Label parameter={'average'} value={division(sum, all)} />
-      <Label parameter={'positive'} value={getPercent(division(good, all)) } />
+      <Statistic parameter={'good'} value={good} />
+      <Statistic parameter={'neutral'} value={neutral} />
+      <Statistic parameter={'bad'} value={bad} />
+      <Statistic parameter={'all'} value={all} />
+      <Statistic parameter={'average'} value={division(sum, all)} />
+      <Statistic parameter={'positive'} value={getPercent(division(good, all)) } />
     </div>
   )
 }
@@ -63,7 +68,7 @@ const App = () => {
 
   const registerNeutral = () => {
     setNeutral(neutral + 1)
-    setAll(sum + 1)
+    setAll(all + 1)
   }
 
   const registerBad = () => {
@@ -79,7 +84,34 @@ const App = () => {
       <Button onClick={registerNeutral} text='neutral' />
       <Button onClick={registerBad} text='bad' />
       <h1>statistics</h1>
-      <Statistics good={good} neutral ={neutral} bad={bad} all={all} sum={sum} />
+      <table>
+        <tr>
+          <td>good</td>
+          <td>{good}</td>
+        </tr>
+        <tr>
+          <td>neutral</td>
+          <td>{neutral}</td>
+        </tr>
+        <tr>
+          <td>bad</td>
+          <td>{bad}</td>
+        </tr>
+        <tr>
+          <td>all</td>
+          <td>{all}</td>
+        </tr>
+        <tr>
+          <td>average</td>
+          <td>{division(sum, all)}</td>
+        </tr>
+        <tr>
+          <td>positive</td>
+          <td>{getPercent(division(good, all))}</td>
+        </tr>
+      </table>
+      {/*Statistic component version below: */}
+      {/*<Statistics good={good} neutral ={neutral} bad={bad} all={all} sum={sum} />*/}
     </div>
   )
 }
