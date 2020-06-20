@@ -23,16 +23,16 @@ const Button = ({onClick, text}) => {
 
 //Following two components can be used instead of the HTML table
 //Currently unused
-const Statistic = ({parameter, value}) => {
+/*const Statistic = ({parameter, value}) => {
   return (
     <div>
       {parameter} {value}
     </div>
   )  
-}
+}*/
 
 //Unused due to table implementtion
-const Statistics = ({good, neutral, bad, all, sum}) => {
+/*const Statistics = ({good, neutral, bad, all, sum}) => {
 
   if(all === 0) return( 
     <div>
@@ -50,7 +50,7 @@ const Statistics = ({good, neutral, bad, all, sum}) => {
       <Statistic parameter={'positive'} value={getPercent(division(good, all)) } />
     </div>
   )
-}
+}*/
 
 const App = () => {
   
@@ -85,6 +85,7 @@ const App = () => {
       <Button onClick={registerBad} text='bad' />
       <h1>statistics</h1>
       <table>
+        <tbody>
         <tr>
           <td>good</td>
           <td>{good}</td>
@@ -109,6 +110,7 @@ const App = () => {
           <td>positive</td>
           <td>{getPercent(division(good, all))}</td>
         </tr>
+        </tbody>
       </table>
       {/*Statistic component version below: */}
       {/*<Statistics good={good} neutral ={neutral} bad={bad} all={all} sum={sum} />*/}
