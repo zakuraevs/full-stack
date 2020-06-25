@@ -10,7 +10,10 @@ const Button = ({onClick, text}) => {
 }
 
 const App = (props) => {
+  const numOFAnecdotes = anecdotes.length
   const [selected, setSelected] = useState(0)
+  const [votes, increaseVote] = useState(new Array(numOFAnecdotes+1).join('0').split('').map(parseFloat))
+  const [maxIndex, updateMax] = useState(votes.indexOf(Math.max(...votes)))
 
   const generateNumber = () => {
     const length = anecdotes.length
@@ -21,10 +24,24 @@ const App = (props) => {
     setSelected(index)
   }
 
+  const incrementVotes = () => {
+    const newVotes = [...votes]
+    newVotes[selected] += 1
+    increaseVote(newVotes)
+    updateMax(newVotes.indexOf(Math.max(...newVotes)))
+    console.log(maxIndex)
+  }
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{props.anecdotes[selected]}</div>
+      <div>has {votes[selected]} votes</div>
+      <Button onClick={incrementVotes} text='vote' />
       <Button onClick={generateNumber} text='next anecdote' />
+      <h1>Anecdote with most votes</h1>
+      <div>{props.anecdotes[maxIndex]}</div>
+      <div>has {votes[maxIndex]} vote(s)</div>
     </div>
   )
 }
