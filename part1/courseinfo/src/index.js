@@ -3,17 +3,13 @@ import ReactDOM from 'react-dom';
 
 const Header = (course) => {
   return (
-    <div>
       <h1>{course.name}</h1>     
-    </div>
   )
 }
 
 const Part = (course) => {
   return(
-    <div>
       <p>{course.part} {course.exercises}</p>
-    </div>
   )
 }
 
