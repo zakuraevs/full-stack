@@ -5,6 +5,7 @@ import App from './App'
 const contacts = [
   {
     name: 'Artas Hellas',
+    phone: '040-123456',
     id: 'Artas Hellas'
   }
 

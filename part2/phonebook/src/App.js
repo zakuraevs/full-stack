@@ -4,6 +4,7 @@ import Contact from './components/Contact'
 const App = (props) => {
   const [ contacts, setContacts ] = useState(props.contacts) 
   const [ newName, setNewName ] = useState('')
+  const [ newPhoneNum, setNewPhoneNum] = useState('')
 
   const addContact = (event) => {
     event.preventDefault()
@@ -13,16 +14,23 @@ const App = (props) => {
     } else {
       const noteObject = {
         name: newName,
+        phone: newPhoneNum,
         id: newName
       }
       setContacts(contacts.concat(noteObject))
       setNewName('')
+      setNewPhoneNum('')
     }
   }
 
   const handleNewName = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
+  }
+
+  const handleNewPhoneNum = (event) => {
+    console.log(event.target.value)
+    setNewPhoneNum(event.target.value)
   }
 
 
@@ -35,6 +43,12 @@ const App = (props) => {
           name: <input 
             value={newName}
             onChange={handleNewName}
+          />
+        </div>
+        <div>
+          number: <input 
+            value={newPhoneNum}
+            onChange={handleNewPhoneNum}
           />
         </div>
         <div>
