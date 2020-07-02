@@ -1,17 +1,66 @@
 import React, { useState } from 'react'
 import Contact from './components/Contact'
 
-const App = (props) => {
+//Component for filter field
+const FilterField = (props) => {
+  return (
+    <div>
+        filter contacts: <input
+          value={props.filterValue}
+          onChange={props.handleNewFilterValue}
+        />
+    </div>
+)}
+
+//Component for form to add new contacts
+const ContactForm = (props) => {
+  return(
+    <form onSubmit={props.addContact}>
+    <div>
+      name: <input 
+        value={props.newName}
+        onChange={props.handleNewName}
+      />
+    </div>
+    <div>
+      number: <input 
+        value={props.newPhoneNum}
+        onChange={props.handleNewPhoneNum}
+      />
+    </div>
+    <div>
+      <button type="submit">add</button>
+    </div>
+    </form>
+)}
+
+//Component that renders existing contacts that meet filtering criteria
+const RenderingOfContacts = (props) => {
+  return(
+    <div>
+      {props.contacts.filter(contact => contact.name.toLowerCase()
+        .includes(props.filterValue.toLowerCase()))
+        .map((contact, i) => <Contact key={contact.name} contact={contact} />)}
+    </div>
+)}
+
+const App = () => {
+  //stat that stores contact objects
+  //hard-coded test contacts
   const [ contacts, setContacts ] = useState([
     { name: 'Arto Hellas', phone: '040-123456', id: 'Arto Hellas' },
     { name: 'Ada Lovelace', phone: '39-44-5323523', id: 'Ada Lovelace' },
     { name: 'Dan Abramov', phone: '12-43-234345', id: 'Dan Abramov' },
     { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 'Mary Poppendieck' }
   ])
+  //state that stores the value of new name being added, i.e. what is currently typed in the name field
   const [ newName, setNewName ] = useState('')
+  //state that stores the value of new name phone number added, i.e. what is currently typed in the number field
   const [ newPhoneNum, setNewPhoneNum ] = useState('')
+  //state that stores the current value of the filter field
   const [ filterValue, setFilterValue ] = useState('')
 
+  //function that is called when the 'add' button is clicked. Adds new object to array of contacts, resets several states
   const addContact = (event) => {
     event.preventDefault()
 
@@ -29,6 +78,7 @@ const App = (props) => {
     }
   }
 
+  //Event handlers for the 3 forms used in the app
   const handleNewName = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -40,40 +90,22 @@ const App = (props) => {
   }
 
   const handleNewFilterValue = (event) => {
+    console.log(event.target.value)
     setFilterValue(event.target.value)
   }
 
   return (
     <div>
-      {/*<div>debug: {newName}</div>*/}
       <h2>Phonebook</h2>
-      <div>
-        filter contacts: <input
-          value={filterValue}
-          onChange={handleNewFilterValue}
-        />
-      </div>
-      <form onSubmit={addContact}>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNewName}
-          />
-        </div>
-        <div>
-          number: <input 
-            value={newPhoneNum}
-            onChange={handleNewPhoneNum}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      
+      < FilterField filterValue={filterValue} handleNewFilterValue={handleNewFilterValue}  />
+      
+      < ContactForm addContact={addContact} newName={newName} handleNewName={handleNewName} newPhoneNum={newPhoneNum} handleNewPhoneNum={handleNewPhoneNum}/>
+
       <h2>Numbers</h2>
-        {contacts.filter(contact => contact.name.toLowerCase()
-          .includes(filterValue))
-          .map((contact, i) => <Contact key={contact.name} contact={contact} />)}
+        
+      < RenderingOfContacts contacts={contacts} filterValue={filterValue} />
+
     </div>
   )
 }
