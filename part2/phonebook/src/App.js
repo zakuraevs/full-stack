@@ -4,15 +4,20 @@ import Contact from './components/Contact'
 const App = (props) => {
   const [ contacts, setContacts ] = useState(props.contacts) 
   const [ newName, setNewName ] = useState('')
+
   const addContact = (event) => {
     event.preventDefault()
 
-    const noteObject = {
-      name: newName,
-      id: newName
+    if(contacts.map(contact => contact.name).includes(newName)) {
+      window.alert(`${newName} is already added to the phonebook`)
+    } else {
+      const noteObject = {
+        name: newName,
+        id: newName
+      }
+      setContacts(contacts.concat(noteObject))
+      setNewName('')
     }
-    setContacts(contacts.concat(noteObject))
-    setNewName('')
   }
 
   const handleNewName = (event) => {
