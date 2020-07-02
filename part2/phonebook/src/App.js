@@ -2,9 +2,15 @@ import React, { useState } from 'react'
 import Contact from './components/Contact'
 
 const App = (props) => {
-  const [ contacts, setContacts ] = useState(props.contacts) 
+  const [ contacts, setContacts ] = useState([
+    { name: 'Arto Hellas', phone: '040-123456', id: 'Arto Hellas' },
+    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 'Ada Lovelace' },
+    { name: 'Dan Abramov', phone: '12-43-234345', id: 'Dan Abramov' },
+    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 'Mary Poppendieck' }
+  ])
   const [ newName, setNewName ] = useState('')
-  const [ newPhoneNum, setNewPhoneNum] = useState('')
+  const [ newPhoneNum, setNewPhoneNum ] = useState('')
+  const [ filterValue, setFilterValue ] = useState('')
 
   const addContact = (event) => {
     event.preventDefault()
@@ -33,11 +39,20 @@ const App = (props) => {
     setNewPhoneNum(event.target.value)
   }
 
+  const handleNewFilterValue = (event) => {
+    setFilterValue(event.target.value)
+  }
 
   return (
     <div>
       {/*<div>debug: {newName}</div>*/}
       <h2>Phonebook</h2>
+      <div>
+        filter contacts: <input
+          value={filterValue}
+          onChange={handleNewFilterValue}
+        />
+      </div>
       <form onSubmit={addContact}>
         <div>
           name: <input 
@@ -56,7 +71,9 @@ const App = (props) => {
         </div>
       </form>
       <h2>Numbers</h2>
-        {contacts.map((contact, i) => <Contact key={contact.name} contact={contact} />)}
+        {contacts.filter(contact => contact.name.toLowerCase()
+          .includes(filterValue))
+          .map((contact, i) => <Contact key={contact.name} contact={contact} />)}
     </div>
   )
 }
