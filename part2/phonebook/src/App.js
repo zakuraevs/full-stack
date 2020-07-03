@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Contact from './components/Contact'
 
 //Component for filter field
@@ -59,6 +60,18 @@ const App = () => {
   const [ newPhoneNum, setNewPhoneNum ] = useState('')
   //state that stores the current value of the filter field
   const [ filterValue, setFilterValue ] = useState('')
+
+  //Effect hook that calls the function defined within curly braces whenever the page is re-rendered
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setContacts(response.data)
+      })
+  }, [])
+  console.log('render', contacts.length, 'notes')
 
   //function that is called when the 'add' button is clicked. Adds new object to array of contacts, resets several states
   const addContact = (event) => {
