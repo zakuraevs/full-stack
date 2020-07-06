@@ -33,8 +33,7 @@ const CountriesDisplayed = (props) => {
   //NEEDS WORK HERE 
   const changeVisibility = (name) => {
     //const cntisWithNewVis = 
-    props.setCountries(props.countries.map( country => country.name !== name ? country : {...country, visible: true} ))
-    console.log(props.countries.find(country => country.name === name).visible)
+    props.setCountries(props.countries.map( country => country.name !== name ? country : {...country, visible: !country.visible} ))
   }
 
   //What gets displayed based on number of fits
@@ -60,28 +59,32 @@ const CountriesDisplayed = (props) => {
         {fits
           .map((country,i) => 
             <div key={i}>
-             {country.display ? < ExpandedCountry 
+             {props.expandedCountries.includes(country) ? < ExpandedCountry 
               name={country.name} 
               capital={country.capital}
-              display={props.countries.find(country => country.name === country.name).visible} 
+              display={props.countries.find(c => c.name === country.name).visible} 
               population={country.population} 
               languages={country.languages} 
               flag={country.flag} 
               changeVisibility={changeVisibility}
-              /> : < HiddenCountry name={country.name} changeVisibility={changeVisibility} />}
+              expandedCountries={props.expandedCountries} 
+              setExpandedCountries={props.setExpandedCountries}
+              /> : < HiddenCountry countries={props.countries} name={country.name} changeVisibility={changeVisibility} expandedCountries={props.expandedCountries} setExpandedCountries={props.setExpandedCountries}/>}
           
             </div>
             )}
       </div>
     )} else if (numOfFits === 1) {
-
+    
     const oneCountry = fits[0]
     return (
       <div>
         {
-          < ExpandedCountry name={oneCountry.name} capital={oneCountry.capital} display={true}
+          < ExpandedCountry single={true} name={oneCountry.name} capital={oneCountry.capital} display={true}
           population={oneCountry.population} languages={oneCountry.languages} 
-          flag={oneCountry.flag} />
+          flag={oneCountry.flag} changeVisibility={changeVisibility}
+          expandedCountries={props.expandedCountries} 
+              setExpandedCountries={props.setExpandedCountries}/>
         }
       </div>
     )
@@ -97,7 +100,7 @@ const App = () => {
 
   const [searchValue, setSearchValue] = useState('')
   const [countries, setCountries] = useState([])
-  //const [visibility, setVisibility] = useState(countries.map(country => false))
+  const [ expandedCountries, setExpandedCountries ] = useState([])
 
   useEffect(() => {
     console.log('effect')
@@ -117,7 +120,7 @@ const App = () => {
   return (
     <div>
       <SearchField searchValue={searchValue} handleNewSearchValue={handleNewSearchValue} />
-      <CountriesDisplayed searchValue={searchValue} countries={countries} setCountries={setCountries}/>
+      <CountriesDisplayed searchValue={searchValue} countries={countries} setCountries={setCountries} expandedCountries={expandedCountries} setExpandedCountries={setExpandedCountries} />
     </div>
   )
 }
