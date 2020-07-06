@@ -19,22 +19,13 @@ const SearchField = (props) => {
 //Component that displays the found country or countries
 const CountriesDisplayed = (props) => {
 
-  //Countries that fir the search parameter
+  //Countries that fit the search parameter
   const fits = props.countries
     .filter(country => country.name.toLowerCase()
     .includes(props.searchValue.toLowerCase()))
 
   //The number of fits
   const numOfFits = fits.length
-  //for debugging:
-  console.log(numOfFits)
-  
-  //Function that changes the visibility of a country when the button is clicked
-  //NEEDS WORK HERE 
-  const changeVisibility = (name) => {
-    //const cntisWithNewVis = 
-    props.setCountries(props.countries.map( country => country.name !== name ? country : {...country, visible: !country.visible} ))
-  }
 
   //What gets displayed based on number of fits
   //If search field is empty:
@@ -44,6 +35,7 @@ const CountriesDisplayed = (props) => {
         Type country name above
       </div>
     )
+
   //If there are more than 10 fits
   } else if (numOfFits > 10) {
     return (
@@ -51,67 +43,77 @@ const CountriesDisplayed = (props) => {
         Too many matches, specify name in more detail
       </div>
     )
+
   //If there are between 1 and 10 fits, but not 1  
   } else if (numOfFits <= 10 && numOfFits > 1) {
 
+    //There are between 1 and 10 countries that fir the search criteria
+    //This maps all of them. If a country is included in expanded countrues list,
+    //It is mapped to an ExpandedCountry component,
+    //Otherwise to a HiddenCountry component
     return (
       <div>
-        {fits
-          .map((country,i) => 
-            <div key={i}>
-             {props.expandedCountries.includes(country) ? < ExpandedCountry 
-              name={country.name} 
-              capital={country.capital}
-              display={props.countries.find(c => c.name === country.name).visible} 
-              population={country.population} 
-              languages={country.languages} 
-              flag={country.flag} 
-              changeVisibility={changeVisibility}
-              expandedCountries={props.expandedCountries} 
-              setExpandedCountries={props.setExpandedCountries}
-              /> : < HiddenCountry countries={props.countries} name={country.name} changeVisibility={changeVisibility} expandedCountries={props.expandedCountries} setExpandedCountries={props.setExpandedCountries}/>}
-          
-            </div>
-            )}
+        {fits.map((country,i) => 
+            <div key={i}>{
+              props.expandedCountries.includes(country) ? 
+                < ExpandedCountry 
+                  country={country}
+                  expandedCountries={props.expandedCountries} 
+                  setExpandedCountries={props.setExpandedCountries}
+                /> : 
+                < HiddenCountry 
+                  countries={props.countries} 
+                  name={country.name} 
+                  expandedCountries={props.expandedCountries} 
+                  setExpandedCountries={props.setExpandedCountries}
+                />
+            }</div>
+        )}
       </div>
-    )} else if (numOfFits === 1) {
+
+  //If there is exactly one fit          
+  )} else if (numOfFits === 1) {
     
     const oneCountry = fits[0]
     return (
       <div>
-        {
-          < ExpandedCountry single={true} name={oneCountry.name} capital={oneCountry.capital} display={true}
-          population={oneCountry.population} languages={oneCountry.languages} 
-          flag={oneCountry.flag} changeVisibility={changeVisibility}
+        < ExpandedCountry 
+          single={true}
+          country={oneCountry} 
           expandedCountries={props.expandedCountries} 
-              setExpandedCountries={props.setExpandedCountries}/>
-        }
+          setExpandedCountries={props.setExpandedCountries}
+        />
       </div>
     )
+
+  //If there are no fits
   } else {
     return (
       <div>Type the appropriate country name or a part of it</div>
     )
   }
-
 }
 
 const App = () => {
 
-  const [searchValue, setSearchValue] = useState('')
-  const [countries, setCountries] = useState([])
+  //States responsible for current search value, 
+  //all countries and countries that are shown in expanded form
+  const [ searchValue, setSearchValue ] = useState('')
+  const [ countries, setCountries ] = useState([])
   const [ expandedCountries, setExpandedCountries ] = useState([])
 
+  //Getting countries info from the server
   useEffect(() => {
     console.log('effect')
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
         console.log('promise fulfilled')
-        setCountries(response.data.map(country => Object.assign({}, country, {visible: false})))
+        setCountries(response.data)
       })
   }, [])
 
+  //Handler for search field
   const handleNewSearchValue = (event) => {
     console.log(event.target.value)
     setSearchValue(event.target.value)
@@ -119,8 +121,17 @@ const App = () => {
 
   return (
     <div>
-      <SearchField searchValue={searchValue} handleNewSearchValue={handleNewSearchValue} />
-      <CountriesDisplayed searchValue={searchValue} countries={countries} setCountries={setCountries} expandedCountries={expandedCountries} setExpandedCountries={setExpandedCountries} />
+      <SearchField 
+        searchValue={searchValue} 
+        handleNewSearchValue={handleNewSearchValue} 
+      />
+      <CountriesDisplayed 
+        searchValue={searchValue} 
+        countries={countries} 
+        setCountries={setCountries} 
+        expandedCountries={expandedCountries} 
+        setExpandedCountries={setExpandedCountries} 
+      />
     </div>
   )
 }
