@@ -60,6 +60,8 @@ const CountriesDisplayed = (props) => {
                   country={country}
                   expandedCountries={props.expandedCountries} 
                   setExpandedCountries={props.setExpandedCountries}
+                  weather={props.weather}
+                  setWeather={props.setWeather}
                 /> : 
                 < HiddenCountry 
                   countries={props.countries} 
@@ -82,6 +84,8 @@ const CountriesDisplayed = (props) => {
           country={oneCountry} 
           expandedCountries={props.expandedCountries} 
           setExpandedCountries={props.setExpandedCountries}
+          weather={props.weather}
+          setWeather={props.setWeather}
         />
       </div>
     )
@@ -101,10 +105,10 @@ const App = () => {
   const [ searchValue, setSearchValue ] = useState('')
   const [ countries, setCountries ] = useState([])
   const [ expandedCountries, setExpandedCountries ] = useState([])
+  const [ weather ,setWeather ] = useState([])
 
   //Getting countries info from the server
   useEffect(() => {
-    console.log('effect')
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
@@ -130,7 +134,9 @@ const App = () => {
         countries={countries} 
         setCountries={setCountries} 
         expandedCountries={expandedCountries} 
-        setExpandedCountries={setExpandedCountries} 
+        setExpandedCountries={setExpandedCountries}
+        weather={weather}
+        setWeather={setWeather} 
       />
     </div>
   )
