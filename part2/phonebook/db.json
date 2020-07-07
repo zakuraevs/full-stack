@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "222",
       "id": 1
     },
     {
@@ -22,18 +22,23 @@
     },
     {
       "name": "Sergey Zakuraev",
-      "number": "41-26-523107",
+      "number": "0",
       "id": 5
     },
     {
-      "name": "Alice Zakuraeva",
-      "phone": "99-888-777777",
-      "id": 6
+      "name": "Grisha zak",
+      "number": "099",
+      "id": 7
     },
     {
-      "name": "Grisha Zakuraev",
-      "phone": "22-333-444444",
-      "id": 7
+      "name": "Alice Zakuraeva",
+      "number": "2",
+      "id": 8
+    },
+    {
+      "name": "Alice",
+      "number": "333",
+      "id": 9
     }
   ]
 }

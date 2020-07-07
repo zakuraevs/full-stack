@@ -14,7 +14,7 @@ const Contact = (props) => {
   }
 
   return (
-    <div>{props.contact.name} {props.contact.phone} <button onClick={removeContact}>delete</button></div>
+    <div>{props.contact.name} {props.contact.number} <button onClick={removeContact}>delete</button></div>
   )
 }
 

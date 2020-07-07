@@ -82,15 +82,24 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
 
+    const noteObject = {
+      name: newName,
+      number: newPhoneNum,
+    }
+
     if(contacts.map(contact => contact.name).includes(newName)) {
-      window.alert(`${newName} is already added to the phonebook`)
+      const result = window.confirm(`${newName} is already added to the phonebook. Update the old number with a new one?`)
+      if(result) {
+        contactService
+          .updatePhone(contacts.find(contact => contact.name === newName).id, noteObject)
+          .then(date => {
+            contactService.getAll().then(data => {setContacts(data)})
+            setNewName('')
+            setNewPhoneNum('')
+          })
+        }
     } else {
 
-      const noteObject = {
-        name: newName,
-        phone: newPhoneNum,
-      }
-      
       contactService
         .create(noteObject)
         .then(data => {
