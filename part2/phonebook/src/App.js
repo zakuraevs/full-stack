@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Contact from './components/Contact'
 import contactService from './services/contacts'
 
@@ -38,11 +37,18 @@ const ContactForm = (props) => {
 
 //Component that renders existing contacts that meet filtering criteria
 const RenderingOfContacts = (props) => {
+const filteredContacts = props.contacts
+                          .filter(contact => contact.name.toLowerCase()
+                          .includes(props.filterValue.toLowerCase()))
   return(
     <div>
-      {props.contacts.filter(contact => contact.name.toLowerCase()
-        .includes(props.filterValue.toLowerCase()))
-        .map((contact, i) => <Contact key={contact.name} contact={contact} />)}
+      {
+        filteredContacts.map(contact => <Contact 
+                              key={contact.name} 
+                              contact={contact} 
+                              setContacts={props.setContacts} 
+                              contacts={props.contacts}/>
+                              )}
     </div>
 )}
 
@@ -121,7 +127,7 @@ const App = () => {
 
       <h2>Numbers</h2>
         
-      < RenderingOfContacts contacts={contacts} filterValue={filterValue} />
+      < RenderingOfContacts setContacts={setContacts} contacts={contacts} filterValue={filterValue} />
 
     </div>
   )
