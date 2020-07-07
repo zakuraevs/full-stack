@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Contact from './components/Contact'
+import contactService from './services/contacts'
 
 //Component for filter field
 const FilterField = (props) => {
@@ -63,15 +64,13 @@ const App = () => {
 
   //Effect hook that calls the function defined within curly braces whenever the page is re-rendered
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setContacts(response.data)
+    contactService
+      .getAll()
+      .then(data => {
+        //console.log(response.config)
+        setContacts(data)
       })
   }, [])
-  console.log('render', contacts.length, 'notes')
 
   //function that is called when the 'add' button is clicked. Adds new object to array of contacts, resets several states
   const addContact = (event) => {
@@ -80,15 +79,16 @@ const App = () => {
     if(contacts.map(contact => contact.name).includes(newName)) {
       window.alert(`${newName} is already added to the phonebook`)
     } else {
+
       const noteObject = {
         name: newName,
         phone: newPhoneNum,
       }
       
-      axios
-        .post('http://localhost:3001/persons', noteObject)
-        .then(response => {
-          setContacts(contacts.concat(noteObject))
+      contactService
+        .create(noteObject)
+        .then(data => {
+          setContacts(contacts.concat(data))
           setNewName('')
           setNewPhoneNum('')
         })
