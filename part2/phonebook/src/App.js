@@ -83,11 +83,15 @@ const App = () => {
       const noteObject = {
         name: newName,
         phone: newPhoneNum,
-        id: newName
       }
-      setContacts(contacts.concat(noteObject))
-      setNewName('')
-      setNewPhoneNum('')
+      
+      axios
+        .post('http://localhost:3001/persons', noteObject)
+        .then(response => {
+          setContacts(contacts.concat(noteObject))
+          setNewName('')
+          setNewPhoneNum('')
+        })
     }
   }
 
