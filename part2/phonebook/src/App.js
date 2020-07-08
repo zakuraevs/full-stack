@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Contact from './components/Contact'
+import Notification from './components/Notification' 
 import contactService from './services/contacts'
 
 //Component for filter field
@@ -68,6 +69,8 @@ const App = () => {
   //state that stores the current value of the filter field
   const [ filterValue, setFilterValue ] = useState('')
 
+  const [notificationMessage, setNotificationMessage] = useState(null)
+
   //Effect hook that calls the function defined within curly braces whenever the page is re-rendered
   useEffect(() => {
     contactService
@@ -96,6 +99,10 @@ const App = () => {
             contactService.getAll().then(data => {setContacts(data)})
             setNewName('')
             setNewPhoneNum('')
+            setNotificationMessage(`Updated ${newName}'s phone`)
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 5000)
           })
         }
     } else {
@@ -106,6 +113,10 @@ const App = () => {
           setContacts(contacts.concat(data))
           setNewName('')
           setNewPhoneNum('')
+          setNotificationMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     }
   }
@@ -129,6 +140,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={notificationMessage} />
       
       < FilterField filterValue={filterValue} handleNewFilterValue={handleNewFilterValue}  />
       
