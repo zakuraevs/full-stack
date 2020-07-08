@@ -71,6 +71,8 @@ const App = () => {
 
   const [notificationMessage, setNotificationMessage] = useState(null)
 
+  const [notificationColor, setNotificationColor] = useState('green')
+
   //Effect hook that calls the function defined within curly braces whenever the page is re-rendered
   useEffect(() => {
     contactService
@@ -103,6 +105,17 @@ const App = () => {
             setTimeout(() => {
               setNotificationMessage(null)
             }, 5000)
+          })
+          .catch(error => {
+            setNotificationColor('red')
+            setNotificationMessage(
+              `Information of ${newName} was already removed from server`
+            )
+            setTimeout(() => {
+              setNotificationColor('green')
+              setNotificationMessage(null)
+            }, 5000)
+            setContacts(contacts.filter(c => c.id !== contacts.find(contact => contact.name === newName).id,))
           })
         }
     } else {
@@ -141,7 +154,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} color={notificationColor}/>
       
       < FilterField filterValue={filterValue} handleNewFilterValue={handleNewFilterValue}  />
       

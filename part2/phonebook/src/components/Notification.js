@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Notification = ({ message }) => {
+const Notification = (props) => {
 
     const notificationStyle = {
-        color: 'green',
+        color: props.color,
         background: 'lightgrey',
         fontSize: 20,
         borderStyle: 'solid',
@@ -13,13 +13,13 @@ const Notification = ({ message }) => {
     }
       
 
-    if (message === null) {
+    if (props.message === null) {
       return null
     }
   
     return (
       <div style={notificationStyle} >
-        {message}
+        {props.message}
       </div>
     )
   }
