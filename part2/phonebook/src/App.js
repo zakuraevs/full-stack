@@ -38,18 +38,22 @@ const ContactForm = (props) => {
 
 //Component that renders existing contacts that meet filtering criteria
 const RenderingOfContacts = (props) => {
-const filteredContacts = props.contacts
-                          .filter(contact => contact.name.toLowerCase()
-                          .includes(props.filterValue.toLowerCase()))
+
+  //contacts that contain the search field text
+  const filteredContacts = props.contacts
+    .filter(contact => contact.name.toLowerCase()
+    .includes(props.filterValue.toLowerCase()))
+
+  //filtererd contacts, each mapped to a Contact component  
   return(
     <div>
       {
-        filteredContacts.map(contact => <Contact 
-                              key={contact.name} 
-                              contact={contact} 
-                              setContacts={props.setContacts} 
-                              contacts={props.contacts}/>
-                              )}
+        filteredContacts.map(contact => <Contact
+          key={contact.name}
+          contact={contact}
+          setContacts={props.setContacts}
+          contacts={props.contacts} />
+        )}
     </div>
 )}
 
@@ -68,9 +72,9 @@ const App = () => {
   const [ newPhoneNum, setNewPhoneNum ] = useState('')
   //state that stores the current value of the filter field
   const [ filterValue, setFilterValue ] = useState('')
-
+  //state, stores value of notification message
   const [notificationMessage, setNotificationMessage] = useState(null)
-
+  //state, stores value of notification color
   const [notificationColor, setNotificationColor] = useState('green')
 
   //Effect hook that calls the function defined within curly braces whenever the page is re-rendered
@@ -78,7 +82,6 @@ const App = () => {
     contactService
       .getAll()
       .then(data => {
-        //console.log(response.config)
         setContacts(data)
       })
   }, [])
@@ -93,7 +96,9 @@ const App = () => {
     }
 
     if(contacts.map(contact => contact.name).includes(newName)) {
+
       const result = window.confirm(`${newName} is already added to the phonebook. Update the old number with a new one?`)
+
       if(result) {
         contactService
           .updatePhone(contacts.find(contact => contact.name === newName).id, noteObject)
@@ -119,7 +124,6 @@ const App = () => {
           })
         }
     } else {
-
       contactService
         .create(noteObject)
         .then(data => {

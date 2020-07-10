@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/persons'
+//Should be changed to relative URL according to course
+//but i dont get why
+const baseUrl = 'https://mighty-forest-37221.herokuapp.com/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
