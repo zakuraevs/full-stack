@@ -135,6 +135,16 @@ const App = () => {
             setNotificationMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          setNotificationColor('red')
+          setNotificationMessage(
+            `Probably too few symbols in name or phone: ${error}`
+          )
+          setTimeout(() => {
+            setNotificationColor('green')
+            setNotificationMessage(null)
+          }, 5000)
+        })
     }
   }
 
