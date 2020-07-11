@@ -95,7 +95,7 @@ const App = () => {
       number: newPhoneNum,
     }
 
-    if(contacts.map(contact => contact.name).includes(newName)) {
+    /*if(contacts.map(contact => contact.name).includes(newName)) {
 
       const result = window.confirm(`${newName} is already added to the phonebook. Update the old number with a new one?`)
 
@@ -123,7 +123,7 @@ const App = () => {
             setContacts(contacts.filter(c => c.id !== contacts.find(contact => contact.name === newName).id,))
           })
         }
-    } else {
+    } else {*/
       contactService
         .create(noteObject)
         .then(data => {
@@ -136,7 +136,7 @@ const App = () => {
           }, 5000)
         })
     }
-  }
+  //}
 
   //Event handlers for the 3 forms used in the app
   const handleNewName = (event) => {
