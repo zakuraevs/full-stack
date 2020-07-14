@@ -1,0 +1,3 @@
+module.exporsts = {
+    testEnvironment: 'node'
+}
