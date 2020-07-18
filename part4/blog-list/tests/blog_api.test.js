@@ -41,6 +41,19 @@ describe('api tests', () => {
         expect(response.body).toHaveLength(helper.initialBlogs.length)
     })
 
+    test('api: correct name of id property', async () => {
+        console.log('entered test')
+
+        const response = await api.get('/api/blogs')
+
+        console.log(response.body)
+
+        for(let index = 0; index < response.body.length; index++) {
+            expect(response.body[index].id).toBeDefined()
+        }
+    })
+
+
     afterAll(() => {
         mongoose.connection.close()
     })
