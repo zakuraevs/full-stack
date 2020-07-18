@@ -16,11 +16,19 @@ blogsRouter.post('/', async (request, response) => {
 
     const blog = new Blog(request.body)
 
-    if('likes' in request.body) {
-        null
-    } else {
+    //checking if likes are given
+    //if not, defaulting to zero
+    if(!('likes' in request.body)) {
         console.log('no likes were given, defaulting to 0')
         blog.likes = 0
+    }
+
+    //checking if author & url are given
+    //if not responding with 400 Bad Request
+    if(!('author' in request.body) && !('url' in request.body)) {
+        console.log('author & url missing from request')
+        response.status(400).end()
+        return
     }
 
     const savedBlog = await blog.save()

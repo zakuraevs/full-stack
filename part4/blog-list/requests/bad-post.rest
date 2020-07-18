@@ -3,7 +3,5 @@ Content-type: application/json
 
 {
     "title": "Hello World",
-    "author": "Bob White",
-    "url": "xxx.yyy.zzz",
-    "likes": 69
+    "likes": 1800
 }

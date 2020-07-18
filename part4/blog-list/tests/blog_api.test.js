@@ -91,6 +91,25 @@ describe('api tests', () => {
 
     })
 
+    test('api: if missing author & url, respond with 400 and not add', async () => {
+        console.log('entered test')
+
+        const newBlogNoAuthUrl = {
+            title: 'A single test blog',
+            likes: 44
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlogNoAuthUrl)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    })
+
 
     afterAll(() => {
         mongoose.connection.close()
