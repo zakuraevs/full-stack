@@ -44,11 +44,31 @@ describe('api tests', () => {
 
         const response = await api.get('/api/blogs')
 
-        for(let index = 0; index < response.body.length; index++) {
+        for (let index = 0; index < response.body.length; index++) {
             expect(response.body[index].id).toBeDefined()
         }
     })
 
+    test('api: every new blog is added correctly', async () => {
+        console.log('entered test')
+
+        const newBlog = {
+            title: 'A single test blog',
+            author: 'me :)',
+            url: 'test blog url',
+            likes: 44
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+         const blogsAtEnd = await helper.blogsInDb()
+
+         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    })
 
     afterAll(() => {
         mongoose.connection.close()
