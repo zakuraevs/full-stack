@@ -65,10 +65,32 @@ describe('api tests', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-         const blogsAtEnd = await helper.blogsInDb()
+        const blogsAtEnd = await helper.blogsInDb()
 
-         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
     })
+
+    test('api: likes default to 0 if no likes are specified', async () => {
+        console.log('entered test')
+
+        const newBlogNoLikes = {
+            title: 'A single test blog',
+            author: 'me :)',
+            url: 'test blog url'
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlogNoLikes)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd[helper.initialBlogs.length].likes).toBe(0)
+
+    })
+
 
     afterAll(() => {
         mongoose.connection.close()
