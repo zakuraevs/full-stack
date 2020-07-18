@@ -25,8 +25,6 @@ describe('api tests', () => {
 
         const response = await api.get('/api/blogs')
 
-        console.log(response)
-
         expect(response.status).toBe(200)
         expect(response.headers['content-type']).toBe('application/json; charset=utf-8')
 
@@ -45,8 +43,6 @@ describe('api tests', () => {
         console.log('entered test')
 
         const response = await api.get('/api/blogs')
-
-        console.log(response.body)
 
         for(let index = 0; index < response.body.length; index++) {
             expect(response.body[index].id).toBeDefined()
