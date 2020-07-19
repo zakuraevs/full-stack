@@ -1,7 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcmdleSIsImlkIjoiNWYxM2I5ZjY3MmFlMzQzOWZkNjk0NDg4IiwiaWF0IjoxNTk1MTM1NjUyfQ.Vo5x9nsD35QVXqUrCnqxeMk907R_DnDxyB_1oB5on1U
-
+Authorization: bearer <token>
 {
     "title": "sergey's note 3",
     "author": "sergey3",
