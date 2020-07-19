@@ -5,6 +5,9 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
 const config = require('../utils/config')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
+
 
 describe('api tests', () => {
 
@@ -15,6 +18,15 @@ describe('api tests', () => {
             let blogObject = new Blog(blog)
             await blogObject.save()
         }
+
+        await User.deleteMany({})
+
+        const passwordHash = await bcrypt.hash('sekret', 10)
+        const user = new User({ username: 'root', passwordHash })
+
+        await user.save()
+
+
     })
 
     helper.blogsInDb()
@@ -56,12 +68,27 @@ describe('api tests', () => {
             title: 'A single test blog',
             author: 'me :)',
             url: 'test blog url',
-            likes: 44
+            likes: 44,
+            userId: '5f13b9f672ae3439fd694488'
         }
+
+        const login = {
+            username: 'root',
+            password: 'sekret'
+        }
+
+        const tokenRes = await api
+            .post('/api/login')
+            .send(login)
+
+        const token = tokenRes.body.token
+
+        console.log('token: ',token)
 
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', 'bearer ' + token)
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
@@ -79,9 +106,21 @@ describe('api tests', () => {
             url: 'test blog url'
         }
 
+        const login = {
+            username: 'root',
+            password: 'sekret'
+        }
+
+        const tokenRes = await api
+            .post('/api/login')
+            .send(login)
+
+        const token = tokenRes.body.token
+
         await api
             .post('/api/blogs')
             .send(newBlogNoLikes)
+            .set('Authorization', 'bearer ' + token)
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
@@ -99,9 +138,21 @@ describe('api tests', () => {
             likes: 44
         }
 
+        const login = {
+            username: 'root',
+            password: 'sekret'
+        }
+
+        const tokenRes = await api
+            .post('/api/login')
+            .send(login)
+
+        const token = tokenRes.body.token
+
         await api
             .post('/api/blogs')
             .send(newBlogNoAuthUrl)
+            .set('Authorization', 'bearer ' + token)
             .expect(400)
 
         const blogsAtEnd = await helper.blogsInDb()
