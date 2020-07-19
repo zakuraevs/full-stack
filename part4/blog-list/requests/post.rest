@@ -1,9 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcmdleSIsImlkIjoiNWYxM2I5ZjY3MmFlMzQzOWZkNjk0NDg4IiwiaWF0IjoxNTk1MTI5NTM5fQ.5vh_BdbHAGu5EqTIVjS3fHhOzHFp5Go1fw8bGjeMVjs
 
 {
-    "title": "Hello World",
-    "author": "Bob White",
+    "title": "Lisa's note 2",
+    "author": "sergey",
     "url": "xxx.yyy.zzz",
-    "likes": 69
+    "likes": 69,
+    "userId": "5f13b9f672ae3439fd694488"
 }
