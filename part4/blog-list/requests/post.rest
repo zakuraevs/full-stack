@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcmdleSIsImlkIjoiNWYxM2I5ZjY3MmFlMzQzOWZkNjk0NDg4IiwiaWF0IjoxNTk1MTI5NTM5fQ.5vh_BdbHAGu5EqTIVjS3fHhOzHFp5Go1fw8bGjeMVjs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InB1ZzMiLCJpZCI6IjVmMTNjYTI0M2YzNmYyM2U4NmRiY2NjMCIsImlhdCI6MTU5NTEzMjQ3Nn0.mIYknHGQxoTLENOzFi6_PsdJXXr-yo9tAv4QbyZelGg
 
 {
-    "title": "Lisa's note 2",
-    "author": "sergey",
+    "title": "pug3's note 1",
+    "author": "pug3",
     "url": "xxx.yyy.zzz",
     "likes": 69,
-    "userId": "5f13b9f672ae3439fd694488"
+    "userId": "5f13ca243f36f23e86dbccc0"
 }
