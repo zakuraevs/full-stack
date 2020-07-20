@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,7 +14,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [url, setUrl ] = useState('')
+  const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -27,7 +29,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      //blogService.setToken(user.token)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -43,17 +45,32 @@ const App = () => {
       )
 
       blogService.setToken(user.token)
+      console.log('user: ', user)
+      console.log('token :', user.token)
+
       setUser(user)
       setUsername('')
       setPassword('')
+      setMessage('Logged in successfuly')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (exception) {
       console.log('wrong credentials')
+      setMessage('Wrong credentials')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
 
   const logOut = () => {
     window.localStorage.clear()
     setUser(null)
+    setMessage('Logged out successfuly')
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const addBlog = (event) => {
@@ -72,14 +89,20 @@ const App = () => {
         setAuthor('')
         setUrl('')
         console.log(returnedBlog)
+        setMessage('Added article successfuly')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
 
-      
   }
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
+
+      <Notification message={message} />
+
       {user === null ?
         <LoginForm
           handleLogin={handleLogin}
@@ -90,7 +113,7 @@ const App = () => {
         /> :
         <div>
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
-          <AddBlogForm   
+          <AddBlogForm
             addBlog={addBlog}
             title={title}
             setTitle={setTitle}
