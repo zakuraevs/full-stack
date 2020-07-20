@@ -17,6 +17,8 @@ loginRouter.post('/', async (request, response) => {
     })
   }
 
+  console.log(`user ${user.username} logged in successfuly`)
+
   const userForToken = {
     username: user.username,
     id: user._id,
