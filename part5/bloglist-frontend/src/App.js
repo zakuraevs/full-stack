@@ -13,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
+
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const App = () => {
   }
 
   const createBlog = (blogObject) => {
-    
+
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -116,7 +116,9 @@ const App = () => {
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
           {blogForm()}
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <div>
+              <Blog key={blog.id} blog={blog} setBlogs={setBlogs}/>
+            </div>
           )}
         </div>
       }
