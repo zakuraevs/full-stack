@@ -48,9 +48,6 @@ test('extra content is rendered when view is clicked', () => {
     const button = component.getByText('view')
     fireEvent.click(button)
 
-
-    component.debug()
-
     expect(component.container).toHaveTextContent(
         'test blog'
     )
@@ -63,6 +60,44 @@ test('extra content is rendered when view is clicked', () => {
     expect(component.container).toHaveTextContent(
         '20'
     )
+
+})
+
+test('if like button is clicked twice, event handler is called twice', () => {
+
+    const blog = {
+        title: 'test blog',
+        author: 'sergo',
+        url: 'bbb.com',
+        likes: 20,
+        user: {
+            id: 'testID'
+        }
+    }
+
+    const mockHandler = jest.fn()
+
+    const component = render(
+        <Blog blog={blog} incrementLikes={mockHandler}/>
+    )
+
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('like')
+
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    //for(let i = 0; i < 3; i++) {
+        //fireEvent.click(likeButton)
+    //}
+
+    component.debug()
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+
+
 
 
 

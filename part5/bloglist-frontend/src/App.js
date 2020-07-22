@@ -88,6 +88,23 @@ const App = () => {
 
   }
 
+  const incrementLikes = async (blog) => {
+
+    const blogObject = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+
+    await blogService.update(blogObject, blog.id)
+
+    const refresh = await blogService.getAll()
+
+    setBlogs(refresh)
+  }
+
   const blogFormRef = useRef()
 
   const blogForm = () => (
@@ -98,7 +115,25 @@ const App = () => {
     </Togglable>
   )
 
-  const sortedByLikes = blogs.sort((a,b) => (a.likes > b.likes) ? -1 : 1)
+  const deleteBlog = (blog) => {
+
+    const prompt = window.confirm(`Delete the blog ${blog.title}?`)
+
+    if(prompt) {
+      blogService
+        .remove(blog.id)
+        .then(() => {
+          blogService
+            .getAll()
+            .then(blogs =>
+              setBlogs(blogs)
+            )
+        })
+    }
+
+  }
+
+  const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : 1)
 
   return (
     <div>
@@ -118,7 +153,13 @@ const App = () => {
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
           {blogForm()}
           {sortedByLikes.map(blog =>
-              <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user}/>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user}
+              incrementLikes={() => incrementLikes(blog)}
+              deleteBlog={() => deleteBlog(blog)}
+            />
           )}
         </div>
       }
