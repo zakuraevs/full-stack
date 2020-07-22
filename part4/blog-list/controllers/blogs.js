@@ -31,12 +31,13 @@ blogsRouter.post('/', async (request, response) => {
         blog.likes = 0
     }
 
+    console.log(request.body)
     //NB: this doesnt work with the frontend, because both properties
     //are always sent, they are jsut empty.
 
     //checking if author & url are given
     //if not responding with 400 Bad Request
-    if (!('author' in request.body) && !('url' in request.body)) {
+    if (!('author' in request.body) || !('url' in request.body) || request.body.author === '' || request.body.url === '') {
         console.log('author & url missing from request')
         response.status(400).end()
         return
