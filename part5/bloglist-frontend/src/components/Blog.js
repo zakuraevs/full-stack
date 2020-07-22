@@ -60,7 +60,7 @@ const Blog = ({ blog, setBlogs, user }) => {
           {blog.url}<br />
           {blog.likes} <button onClick={incrementLikes}>like</button><br />
           {blog.author}<br />
-          {((blog.user.id === user.id) || (blog.user === user.id)) ?<button onClick={deleteBlog} style={{ background: 'red' }}>delete</button> : null}
+          { ( blog.user && ((blog.user.id === user.id) || (blog.user === user.id))) ?<button onClick={deleteBlog} style={{ background: 'red' }}>delete</button> : null}
         </div> :
         <div>
           <div>{blog.title} <button onClick={() => setVisible(!visible)}>view</button></div>
