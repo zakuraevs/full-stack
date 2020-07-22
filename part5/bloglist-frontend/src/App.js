@@ -100,8 +100,6 @@ const App = () => {
 
   const sortedByLikes = blogs.sort((a,b) => (a.likes > b.likes) ? -1 : 1)
 
-    console.log(user)
-
   return (
     <div>
       <h2>Blogs</h2>
