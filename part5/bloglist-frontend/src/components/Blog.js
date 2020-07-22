@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs }) => {
+const Blog = ({ blog, setBlogs, user }) => {
 
   const [visible, setVisible] = useState(false)
 
@@ -15,15 +15,19 @@ const Blog = ({ blog, setBlogs }) => {
 
   const deleteBlog = () => {
 
-    blogService
-      .remove(blog.id)
-      .then(returnedBlog => {
-        blogService
-          .getAll()
-          .then(blogs =>
-            setBlogs(blogs)
-          )
-      })
+    const prompt = window.confirm(`Delete the blog ${blog.title}?`)
+
+    if(prompt) {
+      blogService
+        .remove(blog.id)
+        .then(returnedBlog => {
+          blogService
+            .getAll()
+            .then(blogs =>
+              setBlogs(blogs)
+            )
+        })
+    }
 
   }
 
@@ -37,13 +41,16 @@ const Blog = ({ blog, setBlogs }) => {
       url: blog.url
     }
 
-    const update = await blogService.update(blogObject, blog.id)
+    await blogService.update(blogObject, blog.id)
 
     const refresh = await blogService.getAll()
 
     setBlogs(refresh)
 
   }
+
+  //console.log('user of blog: ', blog.user)
+  //console.log('user: ', user)
 
   return (
     <div style={blogStyle}>
@@ -53,7 +60,7 @@ const Blog = ({ blog, setBlogs }) => {
           {blog.url}<br />
           {blog.likes} <button onClick={incrementLikes}>like</button><br />
           {blog.author}<br />
-          <button onClick={deleteBlog} style={{ background: "red" }}>DEV: delete</button>
+          {((blog.user.id === user.id) || (blog.user === user.id)) ?<button onClick={deleteBlog} style={{ background: "red" }}>delete</button> : null}
         </div> :
         <div>
           <div>{blog.title} <button onClick={() => setVisible(!visible)}>view</button></div>
@@ -64,5 +71,6 @@ const Blog = ({ blog, setBlogs }) => {
   )
 
 }
+
 
 export default Blog

@@ -12,7 +12,7 @@ const AddBlogForm = ({ createBlog }) => {
         const blogObject = {
             title: title,
             author: author,
-            url: url,
+            url: url
         }
 
         createBlog(blogObject)

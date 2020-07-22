@@ -99,7 +99,8 @@ const App = () => {
   )
 
   const sortedByLikes = blogs.sort((a,b) => (a.likes > b.likes) ? -1 : 1)
-  console.log(sortedByLikes)
+
+    console.log(user)
 
   return (
     <div>
@@ -119,7 +120,7 @@ const App = () => {
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
           {blogForm()}
           {sortedByLikes.map(blog =>
-              <Blog key={blog.id} blog={blog} setBlogs={setBlogs}/>
+              <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user}/>
           )}
         </div>
       }
