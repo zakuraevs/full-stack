@@ -8,7 +8,8 @@
     "dev": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose  --runInBand",
-    "test:api": "npm run test -- -t 'api' "
+    "test:api": "npm run test -- -t 'api' ",
+    "start:test": "cross-env NODE_ENV=test node index.js"
   },
   "author": "Sergey Zakuraev",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^7.4.0",
     "jest": "^26.1.0",
     "lins": "0.0.1",
