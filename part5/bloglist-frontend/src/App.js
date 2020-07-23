@@ -152,6 +152,7 @@ const App = () => {
         <div>
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
           {blogForm()}
+          <div id="blogs">
           {sortedByLikes.map(blog =>
             <Blog
               key={blog.id}
@@ -161,6 +162,7 @@ const App = () => {
               deleteBlog={() => deleteBlog(blog)}
             />
           )}
+          </div>
         </div>
       }
     </div>

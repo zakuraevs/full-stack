@@ -39,4 +39,96 @@ describe('Blog app', function () {
         })
     })
 
+    describe('When logged in', function () {
+        beforeEach(function () {
+            cy.login({ username: 'sergey', password: 'sergeypass' })
+        })
+
+        it('A blog can be created', function () {
+            cy.contains('new blog').click()
+            cy.get('#title').type('sergeys blog')
+            cy.get('#author').type('sergey')
+            cy.get('#url').type('abc.com')
+            cy.contains('submit blog').click()
+            cy.contains('sergeys blog')
+        })
+
+
+        describe('and multiple blogs exist', function () {
+
+            beforeEach(function () {
+                cy.createBlog({ title: 'sergeys blog', author: 'sergey', url: 'abc.com' })
+                cy.createBlog({ title: 'sergeys blog 2', author: 'sergey', url: 'abc.com' })
+                cy.createBlog({ title: 'sergeys blog 3', author: 'sergey', url: 'abc.com' })
+            })
+
+            it('A user can like a blog', function () {
+                cy.contains('sergeys blog 2').click()
+                    .contains('view')
+                    .click()
+
+                cy.contains('sergeys blog 2')
+                    .contains('like')
+                    .click()
+
+                cy.contains('1')
+                    .contains('like')
+                    .click()
+
+                cy.contains('2')
+            })
+
+            it('A user can delete  ablog', function () {
+                cy.contains('sergeys blog 2').click()
+                    .contains('view')
+                    .click()
+
+                cy.contains('sergeys blog 2')
+                    .contains('delete')
+                    .click()
+
+                cy.get('html').should('not.contain', 'sergeys blog 2')
+                cy.get('html').should('contain', 'sergeys blog')
+            })
+
+            it('Notes are ordered by numebr of likes', function () {
+
+                cy.contains('sergeys blog 2').click()
+                    .contains('view')
+                    .click()
+
+                cy.contains('sergeys blog 2')
+                    .contains('like')
+                    .click()
+
+                cy.contains('1')
+                    .contains('like')
+                    .click()
+
+                cy.contains('2')
+
+                cy.contains('sergeys blog 3').click()
+                    .contains('view')
+                    .click()
+
+                cy.contains('sergeys blog 3')
+                    .contains('like')
+                    .click()
+
+                cy.get('#blogs').then($blogs => {
+                    const blogsLikes = $blogs.map($el => $el.likes)
+                    cy.wrap(blogsLikes).should('equal', blogsLikes.sort())
+
+
+                })
+
+
+            })
+
+
+
+        })
+
+    })
+
 })
