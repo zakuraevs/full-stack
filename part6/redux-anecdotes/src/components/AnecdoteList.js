@@ -16,7 +16,7 @@ const Anecdote = ({ anecdote, handleVote }) => {
   )
 }
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state)
 
@@ -37,4 +37,4 @@ const Anecdotes = () => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList

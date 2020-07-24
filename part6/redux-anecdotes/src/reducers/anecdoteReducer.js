@@ -42,6 +42,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+//action creators
 export const createAnecdote = (content) => {
   return {
     type: 'NEW_ANECDOTE',
