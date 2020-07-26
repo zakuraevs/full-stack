@@ -2,13 +2,13 @@
   "anecdotes": [
     {
       "content": "If it hurts, do it more often",
-      "id": "47145",
-      "votes": 0
+      "votes": 21,
+      "id": "47145"
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "id": "21149",
-      "votes": 0
+      "votes": 1,
+      "id": "21149"
     },
     {
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
@@ -37,18 +37,88 @@
     },
     {
       "content": "test 1",
+      "votes": 1,
+      "id": "bLQm4fC"
+    },
+    {
+      "content": "test 1",
       "votes": 0,
-      "id": "qsik-7_"
+      "id": "kAFE0XJ"
     },
     {
       "content": "test 2",
       "votes": 0,
-      "id": "fFwRepW"
+      "id": "2xMg7_t"
     },
     {
-      "content": "test success",
+      "content": "test 3",
       "votes": 0,
-      "id": "Neb2JyN"
+      "id": "J2bBFVq"
+    },
+    {
+      "content": "test 4",
+      "votes": 0,
+      "id": "1QwE_AT"
+    },
+    {
+      "content": "test 5",
+      "votes": 0,
+      "id": "3uVcdrL"
+    },
+    {
+      "content": "test 6",
+      "votes": 0,
+      "id": "CTtp01B"
+    },
+    {
+      "content": "test 7",
+      "votes": 0,
+      "id": "NNuCzTB"
+    },
+    {
+      "content": "test 8",
+      "votes": 0,
+      "id": "GQ-XhPL"
+    },
+    {
+      "content": "test 9",
+      "votes": 0,
+      "id": "mOhjnZy"
+    },
+    {
+      "content": "test 10",
+      "votes": 0,
+      "id": "5QvIGdB"
+    },
+    {
+      "content": "11",
+      "votes": 0,
+      "id": "wE8jJv4"
+    },
+    {
+      "content": "12",
+      "votes": 0,
+      "id": "h-Lti3k"
+    },
+    {
+      "content": "13",
+      "votes": 0,
+      "id": "GYMDqIN"
+    },
+    {
+      "content": "14",
+      "votes": 0,
+      "id": "S-o5vJo"
+    },
+    {
+      "content": "15",
+      "votes": 0,
+      "id": "Aztu1ix"
+    },
+    {
+      "content": "16",
+      "votes": 0,
+      "id": "liNC-8p"
     }
   ]
 }

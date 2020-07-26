@@ -4,6 +4,7 @@ import { incrementVotes } from '../reducers/anecdoteReducer'
 import { addNotification } from '../reducers/notificationReducer'
 import { removeNotification } from '../reducers/notificationReducer'
 import store from '../store'
+import anecdoteService from '../services/anecdotes'
 
 const Anecdote = ({ anecdote, handleVote }) => {
   return (
@@ -34,12 +35,10 @@ const AnecdoteList = () => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          handleVote={() => {
+          handleVote={ async () => {
+              await anecdoteService.updateAnecdote(anecdote.content, anecdote.votes + 1, anecdote.id)
               dispatch(incrementVotes(anecdote.id))
-              dispatch(addNotification(`You voted for "${anecdote.content}"`))
-              setTimeout(() => {
-                dispatch(removeNotification())
-              }, 2000)
+              dispatch(addNotification(`you voted '${anecdote.content}'`, 5))
             }
           }
         />

@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { addNotification } from '../reducers/notificationReducer'
-import { removeNotification } from '../reducers/notificationReducer'
+import { addNotification, removeNotification } from '../reducers/notificationReducer'
 import anecdoteService from '../services/anecdotes'
 
 
@@ -33,4 +32,4 @@ const AnecdoteForm = () => {
     )
 }
 
-export default AnecdoteForm
+//export default AnecdoteForm
