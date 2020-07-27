@@ -1,4 +1,5 @@
 const defaultNotif = null
+var timeoutId
 
 const notificationReducer = (state = defaultNotif, action) => {
     switch (action.type) {
@@ -13,13 +14,15 @@ const notificationReducer = (state = defaultNotif, action) => {
 
 export const addNotification = (notification, duration) => {
 
+    clearTimeout(timeoutId)
 
     return async dispatch => {
+        
         await dispatch({
             type: 'UPDATE_NOTIFICATION',
             notification,
         })
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
             dispatch(removeNotification())
         }, duration * 1000)
 
