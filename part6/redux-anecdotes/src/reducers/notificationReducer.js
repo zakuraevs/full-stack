@@ -28,11 +28,6 @@ export const addNotification = (notification, duration) => {
 
     }
 
-
-    /*return {
-       type: 'UPDATE_NOTIFICATION',
-       notification,
-    }*/
 }
 
 export const removeNotification = () => {
