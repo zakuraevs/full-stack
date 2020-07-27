@@ -7,7 +7,7 @@
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 9,
+      "votes": 10,
       "id": "21149"
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "content": "test 2",
-      "votes": 10,
+      "votes": 22,
       "id": "FhHpL3p"
     },
     {
@@ -59,6 +59,21 @@
       "content": "test 4",
       "votes": 0,
       "id": "DTw19B7"
+    },
+    {
+      "content": "test 5",
+      "votes": 0,
+      "id": "-giqa-F"
+    },
+    {
+      "content": "test 6",
+      "votes": 0,
+      "id": "5a7IV_O"
+    },
+    {
+      "content": "test 7",
+      "votes": 1,
+      "id": "mY3VHr-"
     }
   ]
 }
