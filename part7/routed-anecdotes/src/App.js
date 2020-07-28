@@ -24,11 +24,36 @@ const Menu = () => {
   )
 }
 
+const Anecdote = ({anecdotes}) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(a => Number(a.id) === Number(id))
+  /*console.log('type of Number(id) : ', typeof(Number(id)))
+  console.log('type of anecdotes id : ', typeof(anecdotes[1].id))
+
+  console.log('usePArams ID : ', Number(id))
+  console.log('all anecdotes : ', anecdotes)
+  console.log('anecdotes [1] id : ', anecdotes[1].id)
+  console.log('anecdote: ', anecdote)
+
+  console.log('content: ', anecdote.content)
+  console.log('id: ', anecdote.id)*/
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>has {anecdote.votes} votes</div><br/>
+      <div>for more info see <a href={anecdote.info}>{anecdote.info}</a></div><br/>
+    </div>
+  )
+}
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id} >
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>)}
     </ul>
   </div>
 )
@@ -139,8 +164,14 @@ const App = () => {
         <h1>Software anecdotes</h1>
         <Menu />
         <Switch>
+          <Route path="/anecdotes/:id">
+            <Anecdote anecdotes={anecdotes} />
+          </Route>
+          <Route path="/anecdotes">
+            <AnecdoteList anecdotes={anecdotes} />
+          </Route>
           <Route path="/create">
-          <CreateNew addNew={addNew} />
+            <CreateNew addNew={addNew} />
           </Route>
           <Route path="/about">
             <About />
