@@ -80,22 +80,27 @@ const CreateNew = (props) => {
   const history = useHistory()
   const contentField = useField('text')
   const authorField = useField('text')
-  const valueField = useField('text')
+  const infoField = useField('text')
 
   const handleSubmit = (e) => {
     
     e.preventDefault()
     props.addNew({
-      content: contentField.value,
-      author: authorField.value,
-      info: valueField.info,
+      content: contentField.inputProps.value,
+      author: authorField.inputProps.value,
+      info: infoField.inputProps.info,
       votes: 0
     })
     history.push('/')
-    props.addNotification(`a new anecdote "${contentField.value}" has been added`)
+    props.addNotification(`a new anecdote "${contentField.inputProps.value}" has been added`)
   }
 
-  
+  const handleReset = () => {
+    contentField.reset()
+    authorField.reset() 
+    infoField.reset()
+  }
+
 
   return (
     <div>
@@ -103,18 +108,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input { ...contentField } />
+          <input { ...contentField.inputProps } />
         </div>
         <div>
           author
-          <input { ...authorField }/>
+          <input { ...authorField.inputProps }/>
         </div>
         <div>
           url for more info
-          <input { ...valueField } />
+          <input { ...infoField.inputProps } />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type="button" onClick={handleReset}>reset</button>
       </form>
+      
     </div>
   )
 

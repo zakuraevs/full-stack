@@ -1,0 +1,1 @@
+get https://restcountries.eu/rest/v2/name/sweden?fullText=true
