@@ -85,8 +85,10 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
 
   const handleSubmit = (e) => {
+    
     e.preventDefault()
     props.addNew({
       content,
@@ -94,6 +96,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
+    props.addNotification(`a new anecdote "${content}" has been added`)
   }
 
   return (
@@ -139,6 +143,12 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  const addNotification = (message) => {
+    setNotification(message)
+    setTimeout(() => setNotification(''), 10000)
+    //console.log(message)
+  }
+
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -163,6 +173,7 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
+        <div>{notification}</div>
         <Switch>
           <Route path="/anecdotes/:id">
             <Anecdote anecdotes={anecdotes} />
@@ -171,7 +182,7 @@ const App = () => {
             <AnecdoteList anecdotes={anecdotes} />
           </Route>
           <Route path="/create">
-            <CreateNew addNew={addNew} />
+            <CreateNew addNew={addNew} addNotification={addNotification}/>
           </Route>
           <Route path="/about">
             <About />
