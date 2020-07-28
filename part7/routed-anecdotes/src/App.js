@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import { useField } from './hooks/index'
+//import ReactDOM from 'react-dom'
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  Redirect,
+  //Redirect,
   useParams,
   useHistory,
 } from "react-router-dom"
@@ -27,16 +28,7 @@ const Menu = () => {
 const Anecdote = ({anecdotes}) => {
   const id = useParams().id
   const anecdote = anecdotes.find(a => Number(a.id) === Number(id))
-  /*console.log('type of Number(id) : ', typeof(Number(id)))
-  console.log('type of anecdotes id : ', typeof(anecdotes[1].id))
 
-  console.log('usePArams ID : ', Number(id))
-  console.log('all anecdotes : ', anecdotes)
-  console.log('anecdotes [1] id : ', anecdotes[1].id)
-  console.log('anecdote: ', anecdote)
-
-  console.log('content: ', anecdote.content)
-  console.log('id: ', anecdote.id)*/
   return (
     <div>
       <h2>{anecdote.content}</h2>
@@ -81,24 +73,29 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  //const [content, setContent] = useState('')
+  //const [author, setAuthor] = useState('')
+  //const [info, setInfo] = useState('')
 
   const history = useHistory()
+  const contentField = useField('text')
+  const authorField = useField('text')
+  const valueField = useField('text')
 
   const handleSubmit = (e) => {
     
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: contentField.value,
+      author: authorField.value,
+      info: valueField.info,
       votes: 0
     })
     history.push('/')
-    props.addNotification(`a new anecdote "${content}" has been added`)
+    props.addNotification(`a new anecdote "${contentField.value}" has been added`)
   }
+
+  
 
   return (
     <div>
@@ -106,15 +103,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input { ...contentField } />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input { ...authorField }/>
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input { ...valueField } />
         </div>
         <button>create</button>
       </form>
@@ -154,7 +151,7 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
-  const anecdoteById = (id) =>
+  /*const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
   const vote = (id) => {
@@ -166,7 +163,7 @@ const App = () => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-  }
+  }*/
 
   return (
     <Router>
