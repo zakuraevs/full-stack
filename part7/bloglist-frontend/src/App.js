@@ -12,9 +12,6 @@ import { setCredentials } from './reducers/loginReducer'
 import { setUser } from './reducers/userReducer'
 import { setMessage, removeMessage } from './reducers/messageReducer'
 
-
-
-
 const App = () => {
 
   const dispatch = useDispatch()
@@ -27,7 +24,6 @@ const App = () => {
   const credentials = useSelector(state => state.credentials)
   const user = useSelector(state => state.user)
   const message = useSelector(state => state.message)
-  //const [message, setMessage] = useState(null)
 
   //checking local storage for logged in user info
   useEffect(() => {
