@@ -17,6 +17,8 @@ const blogsReducer = (state = [], action) => {
                 blog.id !== id ? blog : changedBlog
             )
         }
+        case 'DELETE_BLOG':
+            return action.data
         default:
             return state
     }
@@ -42,11 +44,12 @@ export const createBlog = newObject => {
     }
 }
 
-export const deleteBlog = () => {
+export const deleteBlog = (id) => {
     return async dispatch => {
+        await blogService.remove(id)
         const blogs = await blogService.getAll()
         dispatch({
-            type: 'INIT_BLOGS',
+            type: 'DELETE_BLOG',
             data: blogs
         })
     }

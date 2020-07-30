@@ -7,7 +7,7 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog, updateBlog } from './reducers/blogsReducer'
+import { initializeBlogs, createBlog, updateBlog, deleteBlog } from './reducers/blogsReducer'
 
 
 
@@ -115,21 +115,22 @@ const App = () => {
   )
 
   //temporarily disabled
-  const deleteBlog = (blog) => {
+  const removeBlog = (blog) => {
 
     const prompt = window.confirm(`Delete the blog ${blog.title}?`)
 
-    /*if (prompt) {
-      blogService
-        .remove(blog.id)
-        .then(() => {
-          blogService
-            .getAll()
-            .then(blogs =>
-              setBlogs(blogs)
-            )
-        })
-    }*/
+    if (prompt) {
+      dispatch(deleteBlog(blog.id))
+      //blogService
+      //  .remove(blog.id)
+      //  .then(() => {
+      //    blogService
+      //      .getAll()
+      //      .then(blogs =>
+      //        setBlogs(blogs)
+      //      )
+      //  })
+    }
 
   }
 
@@ -159,7 +160,7 @@ const App = () => {
                 blog={blog}
                 user={user}
                 incrementLikes={() => incrementLikes(blog)}
-                deleteBlog={() => deleteBlog(blog)}
+                deleteBlog={() => removeBlog(blog)}
               />
             )}
           </div>
