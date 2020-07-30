@@ -1,6 +1,10 @@
 import React from 'react'
+import { setCredentials } from '../reducers/loginReducer'
+import { useDispatch } from 'react-redux'
 
-const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }) => {
+const LoginForm = ({ handleLogin, username, password }) => {
+
+    const dispatch = useDispatch()
 
     return (
         <form onSubmit={handleLogin}>
@@ -11,7 +15,7 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
                     type="text"
                     value={username}
                     name="Username"
-                    onChange={({ target }) => setUsername(target.value)}
+                    onChange={({ target }) => dispatch(setCredentials(target.value, password))}
                 />
             </div>
             <div>
@@ -21,7 +25,7 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
                     type="password"
                     value={password}
                     name="Password"
-                    onChange={({ target }) => setPassword(target.value)}
+                    onChange={({ target }) => dispatch(setCredentials(username, target.value))}
                 />
             </div>
             <button id="login-submit-button" type="submit">login</button>

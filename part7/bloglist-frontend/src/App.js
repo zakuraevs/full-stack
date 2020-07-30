@@ -8,6 +8,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog, updateBlog, deleteBlog } from './reducers/blogsReducer'
+import { setCredentials } from './reducers/loginReducer'
 
 
 
@@ -19,12 +20,17 @@ const App = () => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  const blogs = useSelector(( { blogs } ) => {
+  const blogs = useSelector(({ blogs }) => {
     return blogs
   })
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  //const credentials = useSelector(({ credentials }) => {
+  //  return credentials
+  //})
+  const credentials = useSelector(state => state.credentials)
+
+  //const [username, setUsername] = useState('')
+  //const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const [message, setMessage] = useState(null)
@@ -39,9 +45,13 @@ const App = () => {
     }
   }, [])
 
+  //CREDENTIALS USED HERE
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
+      const username = credentials.username
+      const password = credentials.password
+
       const user = await loginService.login({
         username, password,
       })
@@ -55,8 +65,10 @@ const App = () => {
       console.log('token :', user.token)
 
       setUser(user)
-      setUsername('')
-      setPassword('')
+
+      dispatch(setCredentials('', ''))
+      //setUsername('')
+      //setPassword('')
       setMessage('Logged in successfuly')
       setTimeout(() => {
         setMessage(null)
@@ -84,7 +96,6 @@ const App = () => {
     dispatch(createBlog(blogObject))
   }
 
-  //temporarily disabled
   const incrementLikes = (blog) => {
 
     const blogObject = {
@@ -96,12 +107,6 @@ const App = () => {
     }
 
     dispatch(updateBlog(blogObject, blog.id))
-
-    //await blogService.update(blogObject, blog.id)
-
-    //const refresh = await blogService.getAll()
-
-    //setBlogs(refresh)
   }
 
   const blogFormRef = useRef()
@@ -114,22 +119,12 @@ const App = () => {
     </Togglable>
   )
 
-  //temporarily disabled
   const removeBlog = (blog) => {
 
     const prompt = window.confirm(`Delete the blog ${blog.title}?`)
 
     if (prompt) {
       dispatch(deleteBlog(blog.id))
-      //blogService
-      //  .remove(blog.id)
-      //  .then(() => {
-      //    blogService
-      //      .getAll()
-      //      .then(blogs =>
-      //        setBlogs(blogs)
-      //      )
-      //  })
     }
 
   }
@@ -145,10 +140,10 @@ const App = () => {
       {user === null ?
         <LoginForm
           handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
+          username={credentials.username}
+          //setUsername={setUsername}
+          password={credentials.password}
+          //setPassword={setPassword}
         /> :
         <div>
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>

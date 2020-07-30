@@ -3,12 +3,13 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import blogsReducer from './reducers/blogsReducer'
+import loginReducer from './reducers/loginReducer'
 //import noteReducer from './reducers/noteReducer'
 //import filterReducer from './reducers/filterReducer'
 
 const reducer = combineReducers({
-    blogs: blogsReducer
-    //username:
+    blogs: blogsReducer,
+    credentials: loginReducer
     //password:
     //user:
     //message
