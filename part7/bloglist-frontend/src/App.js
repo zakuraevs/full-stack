@@ -7,7 +7,7 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+import { initializeBlogs, createBlog, updateBlog } from './reducers/blogsReducer'
 
 
 
@@ -23,20 +23,11 @@ const App = () => {
     return blogs
   })
 
-  //console.log(blogs)
-
-  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const [message, setMessage] = useState(null)
-
-  //useEffect(() => {
-  //  blogService.getAll().then(blogs =>
-  //    setBlogs(blogs)
-  //  )
-  //}, [])
 
   //checking local storage for logged in user info
   useEffect(() => {
@@ -90,24 +81,11 @@ const App = () => {
 
   //deal with message
   const addBlog = (blogObject) => {
-
     dispatch(createBlog(blogObject))
-
-    //blogService
-      //.create(blogObject)
-      //.then(returnedBlog => {
-        //setBlogs(blogs.concat(returnedBlog))
-        //console.log(returnedBlog)
-        //setMessage('Added article successfuly')
-        //setTimeout(() => {
-        //  setMessage(null)
-        //}, 5000)
-      //})
-
   }
 
   //temporarily disabled
-  const incrementLikes = async (blog) => {
+  const incrementLikes = (blog) => {
 
     const blogObject = {
       user: blog.user.id,
@@ -116,6 +94,8 @@ const App = () => {
       title: blog.title,
       url: blog.url
     }
+
+    dispatch(updateBlog(blogObject, blog.id))
 
     //await blogService.update(blogObject, blog.id)
 
