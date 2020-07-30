@@ -9,6 +9,8 @@ import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog, updateBlog, deleteBlog } from './reducers/blogsReducer'
 import { setCredentials } from './reducers/loginReducer'
+import { setUser } from './reducers/userReducer'
+
 
 
 
@@ -20,18 +22,12 @@ const App = () => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  const blogs = useSelector(({ blogs }) => {
-    return blogs
-  })
-
-  //const credentials = useSelector(({ credentials }) => {
-  //  return credentials
-  //})
+  const blogs = useSelector(state => state.blogs)
   const credentials = useSelector(state => state.credentials)
+  const user = useSelector(state => state.user)
 
-  //const [username, setUsername] = useState('')
-  //const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+
+  //const [user, setUser] = useState(null)
 
   const [message, setMessage] = useState(null)
 
@@ -40,7 +36,8 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
+      //setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -64,7 +61,7 @@ const App = () => {
       console.log('user: ', user)
       console.log('token :', user.token)
 
-      setUser(user)
+      dispatch(setUser(user))
 
       dispatch(setCredentials('', ''))
       //setUsername('')
@@ -84,7 +81,7 @@ const App = () => {
 
   const logOut = () => {
     window.localStorage.clear()
-    setUser(null)
+    dispatch(setUser(null))
     setMessage('Logged out successfuly')
     setTimeout(() => {
       setMessage(null)

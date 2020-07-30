@@ -1,17 +1,17 @@
-const reducer = (state = 'ALL', action) => {
+const userReducer = (state = null, action) => {
     switch (action.type) {
-        case 'SET_FILTER':
-            return action.filter
+        case 'SET_USER':
+            return action.user
         default:
             return state
     }
 }
 
-export const filterChange = filter => {
+export const setUser = user => {
     return {
-        type: 'SET_FILTER',
-        filter,
+        type: 'SET_USER',
+        user,
     }
 }
 
-export default reducer
+export default userReducer
