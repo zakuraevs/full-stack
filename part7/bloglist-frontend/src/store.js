@@ -5,15 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import blogsReducer from './reducers/blogsReducer'
 import loginReducer from './reducers/loginReducer'
 import userReducer from './reducers/userReducer'
-//import noteReducer from './reducers/noteReducer'
-//import filterReducer from './reducers/filterReducer'
+import messageReducer from './reducers/messageReducer'
+
 
 const reducer = combineReducers({
     blogs: blogsReducer,
     credentials: loginReducer,
-    user: userReducer
-    //message
-
+    user: userReducer,
+    message: messageReducer
 })
 
 const store = createStore(

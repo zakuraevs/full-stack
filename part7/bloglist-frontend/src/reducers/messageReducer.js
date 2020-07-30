@@ -1,17 +1,26 @@
-const reducer = (state = 'ALL', action) => {
+const messageReducer = (state = null, action) => {
     switch (action.type) {
-        case 'SET_FILTER':
-            return action.filter
+        case 'SET_MESSAGE':
+            return action.message
+        case 'REMOVE_MESAGE':
+            return action.message
         default:
             return state
     }
 }
 
-export const filterChange = filter => {
+export const removeMessage = () => {
     return {
-        type: 'SET_FILTER',
-        filter,
+        type: 'REMOVE_MESAGE',
+        message: null
     }
 }
 
-export default reducer
+export const setMessage = message => {
+    return {
+        type: 'SET_MESSAGE',
+        message,
+    }
+}
+
+export default messageReducer

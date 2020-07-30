@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog, updateBlog, deleteBlog } from './reducers/blogsReducer'
 import { setCredentials } from './reducers/loginReducer'
 import { setUser } from './reducers/userReducer'
+import { setMessage, removeMessage } from './reducers/messageReducer'
 
 
 
@@ -25,11 +26,8 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const credentials = useSelector(state => state.credentials)
   const user = useSelector(state => state.user)
-
-
-  //const [user, setUser] = useState(null)
-
-  const [message, setMessage] = useState(null)
+  const message = useSelector(state => state.message)
+  //const [message, setMessage] = useState(null)
 
   //checking local storage for logged in user info
   useEffect(() => {
@@ -37,12 +35,10 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setUser(user))
-      //setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
 
-  //CREDENTIALS USED HERE
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -62,19 +58,17 @@ const App = () => {
       console.log('token :', user.token)
 
       dispatch(setUser(user))
-
       dispatch(setCredentials('', ''))
-      //setUsername('')
-      //setPassword('')
-      setMessage('Logged in successfuly')
+
+      dispatch(setMessage('Logged in successfuly'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(removeMessage())
       }, 5000)
     } catch (exception) {
       console.log('wrong credentials')
-      setMessage('Wrong credentials')
+      dispatch(setMessage('Wrong credentials'))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(removeMessage())
       }, 5000)
     }
   }
@@ -82,15 +76,19 @@ const App = () => {
   const logOut = () => {
     window.localStorage.clear()
     dispatch(setUser(null))
-    setMessage('Logged out successfuly')
+    dispatch(setMessage('Logged out successfuly'))
     setTimeout(() => {
-      setMessage(null)
+      dispatch(removeMessage())
     }, 5000)
   }
 
   //deal with message
   const addBlog = (blogObject) => {
     dispatch(createBlog(blogObject))
+    dispatch(setMessage('Successfuly created a new blog'))
+    setTimeout(() => {
+      dispatch(removeMessage())
+    }, 5000)
   }
 
   const incrementLikes = (blog) => {
@@ -122,6 +120,10 @@ const App = () => {
 
     if (prompt) {
       dispatch(deleteBlog(blog.id))
+      dispatch(setMessage('Successfuly removed the blog'))
+      setTimeout(() => {
+        dispatch(removeMessage())
+      }, 5000)
     }
 
   }
@@ -138,9 +140,7 @@ const App = () => {
         <LoginForm
           handleLogin={handleLogin}
           username={credentials.username}
-          //setUsername={setUsername}
           password={credentials.password}
-          //setPassword={setPassword}
         /> :
         <div>
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
