@@ -6,21 +6,37 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
+
+  const blogs = useSelector(( { blogs } ) => {
+    return blogs
+  })
+
+  //console.log(blogs)
+
+  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const [message, setMessage] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
+  //useEffect(() => {
+  //  blogService.getAll().then(blogs =>
+  //    setBlogs(blogs)
+  //  )
+  //}, [])
 
   //checking local storage for logged in user info
   useEffect(() => {
@@ -72,22 +88,25 @@ const App = () => {
     }, 5000)
   }
 
-  const createBlog = (blogObject) => {
+  //deal with message
+  const addBlog = (blogObject) => {
 
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+    dispatch(createBlog(blogObject))
 
-        console.log(returnedBlog)
-        setMessage('Added article successfuly')
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      })
+    //blogService
+      //.create(blogObject)
+      //.then(returnedBlog => {
+        //setBlogs(blogs.concat(returnedBlog))
+        //console.log(returnedBlog)
+        //setMessage('Added article successfuly')
+        //setTimeout(() => {
+        //  setMessage(null)
+        //}, 5000)
+      //})
 
   }
 
+  //temporarily disabled
   const incrementLikes = async (blog) => {
 
     const blogObject = {
@@ -98,11 +117,11 @@ const App = () => {
       url: blog.url
     }
 
-    await blogService.update(blogObject, blog.id)
+    //await blogService.update(blogObject, blog.id)
 
-    const refresh = await blogService.getAll()
+    //const refresh = await blogService.getAll()
 
-    setBlogs(refresh)
+    //setBlogs(refresh)
   }
 
   const blogFormRef = useRef()
@@ -110,16 +129,17 @@ const App = () => {
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
       <AddBlogForm
-        createBlog={createBlog}
+        createBlog={addBlog}
       />
     </Togglable>
   )
 
+  //temporarily disabled
   const deleteBlog = (blog) => {
 
     const prompt = window.confirm(`Delete the blog ${blog.title}?`)
 
-    if(prompt) {
+    /*if (prompt) {
       blogService
         .remove(blog.id)
         .then(() => {
@@ -129,7 +149,7 @@ const App = () => {
               setBlogs(blogs)
             )
         })
-    }
+    }*/
 
   }
 
@@ -153,15 +173,15 @@ const App = () => {
           <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
           {blogForm()}
           <div id="blogs">
-          {sortedByLikes.map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-              incrementLikes={() => incrementLikes(blog)}
-              deleteBlog={() => deleteBlog(blog)}
-            />
-          )}
+            {sortedByLikes.map(blog =>
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                incrementLikes={() => incrementLikes(blog)}
+                deleteBlog={() => deleteBlog(blog)}
+              />
+            )}
           </div>
         </div>
       }

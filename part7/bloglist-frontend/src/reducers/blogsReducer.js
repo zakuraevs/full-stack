@@ -1,19 +1,45 @@
-const blogReducer = (state = [], action) => {
+import blogService from '../services/blogs'
+
+const blogsReducer = (state = [], action) => {
     switch (action.type) {
         case 'INIT_BLOGS':
-            return //action.filter
+            return action.data
         case 'NEW_BLOG':
-            return //
+            return [...state, action.data]
         default:
             return state
     }
 }
 
-export const filterChange = filter => {
-    return {
-        type: 'SET_FILTER',
-        filter,
+export const initializeBlogs = () => {
+    return async dispatch => {
+        const blogs = await blogService.getAll()
+        dispatch({
+            type: 'INIT_BLOGS',
+            data: blogs
+        })
     }
 }
 
-export default reducer
+//what does data look like
+export const createBlog = newObject => {
+    return async dispatch => {
+      const newBlog = await blogService.create(newObject)
+      dispatch({
+        type: 'NEW_BLOG',
+        data: newBlog,
+      })
+    }
+  }
+
+export const deleteBlog = () => {
+    return async dispatch => {
+        const blogs = await blogService.getAll()
+        dispatch({
+            type: 'INIT_BLOGS',
+            data: blogs
+        })
+    }
+}
+
+export default blogsReducer
