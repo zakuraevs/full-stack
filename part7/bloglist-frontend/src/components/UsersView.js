@@ -1,73 +1,81 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { setUser } from '../reducers/userReducer'
 import LoggedinMessage from './LoggedinMessage'
-import userService from '../services/users'
+import { initializeUsers } from '../reducers/usersReducer'
 
-
+import {
+  Link
+} from 'react-router-dom'
 
 const UsersView = () => {
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user)
+  const users = useSelector(state => state.users)
 
-    // !!! ideally should be changed to redux
-    const [users, setUsers] = useState([])
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [dispatch])
 
-    // !!! THIS IS REPEATED, NOT GOOD
-    //checking local storage for logged in user info
-    useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON)
-            dispatch(setUser(user))
-            blogService.setToken(user.token)
-        }
-    }, [dispatch])
+  // !!! THIS IS REPEATED, NOT GOOD
+  //checking local storage for logged in user info
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      dispatch(setUser(user))
+      blogService.setToken(user.token)
+    }
+    console.log('test')
+  }, [dispatch])
 
-    useEffect(() => {
-        userService
-            .getAll()
-            .then(data => {
-                setUsers(data)
-            })
-    }, [])
+  // !!! this might be needed
+  /*useEffect(() => {
+    userService
+      .getAll()
+      .then(data => {
+        setUsers(data)
+      })
+  }, [])*/
 
-    console.log(users)
-
-    return (
+  return (
+    <div>
+      {user === null ?
+        <div>pelase log in to see user information</div> :
         <div>
-            {user === null ?
-                <div>pelase log in to see user information</div> :
-                <div>
-                    <LoggedinMessage />
-                    <h2>Users</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>user name</th>
-                                <th>blogs created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map(user =>
-                                <tr key={user.id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.blogs.length}</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+          <LoggedinMessage />
+          <h2>Users</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>user name</th>
+                <th>blogs created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(user =>
+                <tr key={user.id}>
+                  <td>
+                    <Link to={`/users/${user.id}`}>
+                      {user.name}
+                    </Link>
+                  </td>
+                  <td>{user.blogs.length}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-
-                </div>
-            }
 
         </div>
-    )
+      }
+
+    </div>
+  )
 }
 
 export default UsersView

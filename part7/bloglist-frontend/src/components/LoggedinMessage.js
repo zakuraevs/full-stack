@@ -6,23 +6,23 @@ import { setMessage, removeMessage } from '../reducers/messageReducer'
 
 
 const LoggedinMessage = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user)
 
 
-    const logOut = () => {
-        window.localStorage.clear()
-        dispatch(setUser(null))
-        dispatch(setMessage('Logged out successfuly'))
-        setTimeout(() => {
-            dispatch(removeMessage())
-        }, 5000)
-    }
+  const logOut = () => {
+    window.localStorage.clear()
+    dispatch(setUser(null))
+    dispatch(setMessage('Logged out successfuly'))
+    setTimeout(() => {
+      dispatch(removeMessage())
+    }, 5000)
+  }
 
-    return (
-        <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
-    )
+  return (
+    <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
+  )
 
 }
 

@@ -1,15 +1,18 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
+const Notification = () => {
+  const message = useSelector(state => state.message)
 
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
+  if (message === null) {
+    return null
   }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 export default Notification

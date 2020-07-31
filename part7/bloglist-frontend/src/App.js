@@ -2,7 +2,7 @@ import React from 'react'
 import Home from './components/Home'
 import UsersView from './components/UsersView'
 import Notification from './components/Notification'
-import { useSelector } from 'react-redux'
+import SingleUserView from './components/SingleUserView'
 
 import {
   BrowserRouter as Router,
@@ -10,9 +10,6 @@ import {
 } from 'react-router-dom'
 
 const App = () => {
-
-  // !!! this should be moved to the Notification component
-  const message = useSelector(state => state.message)
 
   const padding = {
     padding: 5
@@ -26,8 +23,11 @@ const App = () => {
         <Link style={padding} to="/users">users</Link>
       </div>
       <h2>Blogs</h2>
-      <Notification message={message} />
+      <Notification  />
       <Switch>
+        <Route path='/users/:id'>
+          <SingleUserView />
+        </Route>
         <Route path='/users'>
           <UsersView />
         </Route>
