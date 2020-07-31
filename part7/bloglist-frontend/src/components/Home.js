@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
@@ -7,10 +8,9 @@ import { setCredentials } from '../reducers/loginReducer'
 import { setUser } from '../reducers/userReducer'
 import AddBlogForm from './AddBlogForm'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
-import React, { useEffect, useRef } from 'react'
 import Blog from './Blog'
 import LoginForm from './LoginForm'
-import Notification from './Notification'
+import LoggedinMessage from './LoggedinMessage'
 
 const Home = () => {
 
@@ -23,7 +23,6 @@ const Home = () => {
     const blogs = useSelector(state => state.blogs)
     const credentials = useSelector(state => state.credentials)
     const user = useSelector(state => state.user)
-    const message = useSelector(state => state.message)
 
     //checking local storage for logged in user info
     useEffect(() => {
@@ -33,7 +32,7 @@ const Home = () => {
             dispatch(setUser(user))
             blogService.setToken(user.token)
         }
-    }, [])
+    }, [dispatch])
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -69,14 +68,14 @@ const Home = () => {
         }
     }
 
-    const logOut = () => {
+    /*const logOut = () => {
         window.localStorage.clear()
         dispatch(setUser(null))
         dispatch(setMessage('Logged out successfuly'))
         setTimeout(() => {
             dispatch(removeMessage())
         }, 5000)
-    }
+    }*/
 
     //deal with message
     const addBlog = (blogObject) => {
@@ -128,10 +127,6 @@ const Home = () => {
 
     return (
         <div>
-            <h2>Blogs</h2>
-
-            <Notification message={message} />
-
             {user === null ?
                 <LoginForm
                     handleLogin={handleLogin}
@@ -139,7 +134,7 @@ const Home = () => {
                     password={credentials.password}
                 /> :
                 <div>
-                    <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
+                    <LoggedinMessage />
                     {blogForm()}
                     <div id="blogs">
                         {sortedByLikes.map(blog =>
