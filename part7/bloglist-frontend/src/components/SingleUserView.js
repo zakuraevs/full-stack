@@ -58,7 +58,7 @@ const SingleUserView = () => {
                 )}
               </ul>
             </div> :
-            null
+            <h3>No user with such id exists int he database</h3>
 
 
           }

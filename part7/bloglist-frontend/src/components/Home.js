@@ -8,9 +8,12 @@ import { setCredentials } from '../reducers/loginReducer'
 import { setUser } from '../reducers/userReducer'
 import AddBlogForm from './AddBlogForm'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
-import Blog from './Blog'
 import LoginForm from './LoginForm'
 import LoggedinMessage from './LoggedinMessage'
+
+import {
+  Link
+} from 'react-router-dom'
 
 const Home = () => {
 
@@ -86,19 +89,6 @@ const Home = () => {
     }, 5000)
   }
 
-  const incrementLikes = (blog) => {
-
-    const blogObject = {
-      user: blog.user.id,
-      likes: blog.likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url
-    }
-
-    dispatch(updateBlog(blogObject, blog.id))
-  }
-
   const blogFormRef = useRef()
 
   const blogForm = () => (
@@ -125,6 +115,15 @@ const Home = () => {
 
   const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : 1)
 
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
   return (
     <div>
       {user === null ?
@@ -138,13 +137,11 @@ const Home = () => {
           {blogForm()}
           <div id="blogs">
             {sortedByLikes.map(blog =>
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                incrementLikes={() => incrementLikes(blog)}
-                deleteBlog={() => removeBlog(blog)}
-              />
+              <div style={blogStyle} key={blog.id}>
+                <Link to={`/blogs/${blog.id}`} >
+                  {blog.title}
+                </Link> - {blog.likes} likes
+              </div>
             )}
           </div>
         </div>

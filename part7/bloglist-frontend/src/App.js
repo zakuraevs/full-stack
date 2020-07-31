@@ -3,6 +3,7 @@ import Home from './components/Home'
 import UsersView from './components/UsersView'
 import Notification from './components/Notification'
 import SingleUserView from './components/SingleUserView'
+import Blog from './components/Blog'
 
 import {
   BrowserRouter as Router,
@@ -23,13 +24,16 @@ const App = () => {
         <Link style={padding} to="/users">users</Link>
       </div>
       <h2>Blogs</h2>
-      <Notification  />
+      <Notification />
       <Switch>
         <Route path='/users/:id'>
           <SingleUserView />
         </Route>
         <Route path='/users'>
           <UsersView />
+        </Route>
+        <Route path='/blogs/:id'>
+          <Blog />
         </Route>
         <Route path='/'>
           <Home />
