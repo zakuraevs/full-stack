@@ -3,13 +3,12 @@ import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog, updateBlog, deleteBlog } from '../reducers/blogsReducer'
+import { initializeBlogs, createBlog } from '../reducers/blogsReducer'
 import { setCredentials } from '../reducers/loginReducer'
 import { setUser } from '../reducers/userReducer'
 import AddBlogForm from './AddBlogForm'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
 import LoginForm from './LoginForm'
-import LoggedinMessage from './LoggedinMessage'
 
 import {
   Link
@@ -99,19 +98,7 @@ const Home = () => {
     </Togglable>
   )
 
-  const removeBlog = (blog) => {
-
-    const prompt = window.confirm(`Delete the blog ${blog.title}?`)
-
-    if (prompt) {
-      dispatch(deleteBlog(blog.id))
-      dispatch(setMessage('Successfuly removed the blog'))
-      setTimeout(() => {
-        dispatch(removeMessage())
-      }, 5000)
-    }
-
-  }
+  
 
   const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : 1)
 
@@ -133,7 +120,6 @@ const Home = () => {
           password={credentials.password}
         /> :
         <div>
-          <LoggedinMessage />
           {blogForm()}
           <div id="blogs">
             {sortedByLikes.map(blog =>

@@ -47,7 +47,6 @@ const SingleUserView = () => {
       {user === null ?
         <div>pelase log in to see user information</div> :
         <div>
-          <LoggedinMessage />
           {userToDisplay ?
             <div>
               <h2>{userToDisplay.name}</h2>

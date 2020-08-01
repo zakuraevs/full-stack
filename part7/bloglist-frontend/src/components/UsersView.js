@@ -47,7 +47,6 @@ const UsersView = () => {
       {user === null ?
         <div>pelase log in to see user information</div> :
         <div>
-          <LoggedinMessage />
           <h2>Users</h2>
           <table>
             <thead>

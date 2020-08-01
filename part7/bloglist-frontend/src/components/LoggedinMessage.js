@@ -21,7 +21,7 @@ const LoggedinMessage = () => {
   }
 
   return (
-    <p>{user.name} logged-in <button onClick={logOut}>log out</button></p>
+    <div className="menuItem">{user.name} logged-in <button onClick={logOut}>log out</button></div>
   )
 
 }

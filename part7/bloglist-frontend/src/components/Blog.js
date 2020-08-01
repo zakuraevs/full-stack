@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog, updateBlog, deleteBlog } from '../reducers/blogsReducer'
+import { initializeBlogs, updateBlog, deleteBlog } from '../reducers/blogsReducer'
 import { useParams } from 'react-router-dom'
 import { setUser } from '../reducers/userReducer'
 import blogService from '../services/blogs'
@@ -73,7 +73,6 @@ const Blog = () => {
       {user === null ?
         <div>pelase log in to see user information</div> :
         <div>
-          <LoggedinMessage />
           {blog ?
             <div>
               <h1>{blog.title}</h1>
