@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 
-import LoggedinMessage from './LoggedinMessage'
-
 import { useParams } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'

@@ -4,7 +4,6 @@ import { initializeBlogs, updateBlog, deleteBlog } from '../reducers/blogsReduce
 import { useParams } from 'react-router-dom'
 import { setUser } from '../reducers/userReducer'
 import blogService from '../services/blogs'
-import LoggedinMessage from './LoggedinMessage'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
 
 
@@ -26,7 +25,7 @@ const Blog = () => {
   const user = useSelector(state => state.user)
 
   //console.log('blogs: ', blogs)
-  console.log('blog: ', blog)
+  //console.log('blog: ', blog)
 
 
   useEffect(() => {
@@ -79,6 +78,10 @@ const Blog = () => {
               url: <a href={blog.url}>{blog.url}</a><br />
               {blog.likes} likes <button onClick={incrementLikes}>like</button><br />
               added by {blog.author}<br />
+              <h3>comments:</h3>
+              <ul>
+                {blog.comments.map((c, index) => <li key={index} >{c}</li>)}
+              </ul>
               {((blog.user && user) && ((blog.user.id === user.id) || (blog.user === user.id))) ? <button onClick={removeBlog} style={{ background: 'red' }}>delete</button> : null}
             </div> :
             <h3>No post with such id exists int he database</h3>

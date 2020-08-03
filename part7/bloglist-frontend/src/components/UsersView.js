@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { setUser } from '../reducers/userReducer'
-import LoggedinMessage from './LoggedinMessage'
 import { initializeUsers } from '../reducers/usersReducer'
 
 import {

@@ -1,10 +1,12 @@
 POST http://localhost:3003/api/blogs
 Content-type: application/json
-Authorization: bearer <token>
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcmdleSIsImlkIjoiNWYxM2I5ZjY3MmFlMzQzOWZkNjk0NDg4IiwiaWF0IjoxNTk2NDMyNzY5fQ.vVwHzdrITHwIuKmfyP9okbVTHb-EwSpKgsxy9Y_DvUE
+
 {
     "title": "sergey's note 3",
     "author": "sergey3",
     "url": "xxx.yyy.zzz",
     "likes": 69,
-    "userId": "5f13b9f672ae3439fd694488"
+    "userId": "5f13b9f672ae3439fd694488",
+    "comments": [ "test comment 1", "test comment 2" ]
 }
