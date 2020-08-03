@@ -7,6 +7,7 @@ import Blog from './components/Blog'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from './reducers/userReducer'
 import blogService from './services/blogs'
+import { Navbar, Nav } from 'react-bootstrap'
 
 
 import {
@@ -31,34 +32,49 @@ const App = () => {
     }
   }, [dispatch])
 
+  const padding = {
+    padding: 5
+  }
 
   return (
     <Router>
+      <div className="container">
 
-      <div id='menuDiv'>
-        <div className="menuItem"><Link to="/" >home</Link></div>
-        <div className="menuItem"><Link to="/users" >users</Link></div>
-        {user === null ?
-          null :
-          <LoggedinMessage />
-        }
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="#" as="span">
+                <Link style={padding} to="/">home</Link>
+              </Nav.Link>
+              <Nav.Link href="#" as="span">
+                <Link style={padding} to="/users">users</Link>
+              </Nav.Link>
+              <Nav.Item id='loggedInIndicator'>
+                {user === null ?
+                  null :
+                  <LoggedinMessage />
+                }
+              </Nav.Item>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        <Notification />
+        <Switch>
+          <Route path='/users/:id'>
+            <SingleUserView />
+          </Route>
+          <Route path='/users'>
+            <UsersView />
+          </Route>
+          <Route path='/blogs/:id'>
+            <Blog />
+          </Route>
+          <Route path='/'>
+            <Home />
+          </Route>
+        </Switch>
       </div>
-      <h2>Blogs</h2>
-      <Notification />
-      <Switch>
-        <Route path='/users/:id'>
-          <SingleUserView />
-        </Route>
-        <Route path='/users'>
-          <UsersView />
-        </Route>
-        <Route path='/blogs/:id'>
-          <Blog />
-        </Route>
-        <Route path='/'>
-          <Home />
-        </Route>
-      </Switch>
     </Router>
   )
 }

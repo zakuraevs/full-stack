@@ -10,6 +10,8 @@ import AddBlogForm from './AddBlogForm'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
 import LoginForm from './LoginForm'
 
+import { Table, Form, Button } from 'react-bootstrap'
+
 import {
   Link
 } from 'react-router-dom'
@@ -98,18 +100,9 @@ const Home = () => {
     </Togglable>
   )
 
-  
+
 
   const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : 1)
-
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
 
   return (
     <div>
@@ -120,16 +113,24 @@ const Home = () => {
           password={credentials.password}
         /> :
         <div>
+          <h2>Blogs</h2>
           {blogForm()}
-          <div id="blogs">
-            {sortedByLikes.map(blog =>
-              <div style={blogStyle} key={blog.id}>
-                <Link to={`/blogs/${blog.id}`} >
-                  {blog.title}
-                </Link> - {blog.likes} likes
-              </div>
-            )}
-          </div>
+          <Table striped>
+            <tbody>
+              {sortedByLikes.map(blog =>
+                <tr key={blog.id}>
+                  <td>
+                    <Link to={`/blogs/${blog.id}`}>
+                      {blog.title}
+                    </Link>
+                  </td>
+                  <td>
+                    {blog.likes} likes
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </div>
       }
     </div>

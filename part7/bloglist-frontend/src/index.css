@@ -1,8 +1,40 @@
 
-#menuDiv {
-  background: lightgrey;
-  padding: 10px;
-  height: 30px;
+#loggedInIndicator {
+  margin-bottom: 30px;
+  color: white;
+}
+
+#submitNewBlog {
+  margin-top: 10px;
+}
+
+#toggalbeShowButton {
+  margin-bottom: 10px;
+}
+
+#toggalbeCancelButton {
+  margin-bottom: 10px;
+}
+
+#loggedInText {
+  color: #047bfe;
+}
+
+#logOutButton {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#loginButton {
+  margin-top: 10px;
+}
+
+#addCommentButton {
+  margin-top: 10px;
+}
+
+#singleBlogTitle {
+  margin: 15px;
 }
 
 .note {
@@ -12,7 +44,6 @@
 }
 
 .menuItem {
-  color: rgb(0, 255, 0);
   padding: 5px;
   float: left;
   height: 10px;

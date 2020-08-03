@@ -3,6 +3,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
+import { Button } from 'react-bootstrap'
 
 
 const LoggedinMessage = () => {
@@ -21,7 +22,7 @@ const LoggedinMessage = () => {
   }
 
   return (
-    <div className="menuItem">{user.name} logged-in <button onClick={logOut}>log out</button></div>
+    <div className="menuItem" id="loggedInText">{user.name} logged-in <Button variant="outline-primary" size="sm" onClick={logOut} id="logOutButton">log out</Button></div>
   )
 
 }

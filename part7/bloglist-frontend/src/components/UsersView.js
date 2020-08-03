@@ -5,9 +5,9 @@ import blogService from '../services/blogs'
 import { setUser } from '../reducers/userReducer'
 import { initializeUsers } from '../reducers/usersReducer'
 
-import {
-  Link
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+import { Table, Form, Button } from 'react-bootstrap'
 
 const UsersView = () => {
 
@@ -47,7 +47,7 @@ const UsersView = () => {
         <div>pelase log in to see user information</div> :
         <div>
           <h2>Users</h2>
-          <table>
+          <Table striped>
             <thead>
               <tr>
                 <th>user name</th>
@@ -66,7 +66,7 @@ const UsersView = () => {
                 </tr>
               )}
             </tbody>
-          </table>
+          </Table>
 
 
         </div>

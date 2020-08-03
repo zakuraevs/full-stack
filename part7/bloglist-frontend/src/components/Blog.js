@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { setUser } from '../reducers/userReducer'
 import blogService from '../services/blogs'
 import { setMessage, removeMessage } from '../reducers/messageReducer'
+import { Table, Form, Button } from 'react-bootstrap'
 
 
 
@@ -81,25 +82,46 @@ const Blog = () => {
         <div>
           {blog ?
             <div>
-              <h1>{blog.title}</h1>
-              url: <a href={blog.url}>{blog.url}</a><br />
-              {blog.likes} likes <button onClick={incrementLikes}>like</button><br />
-              added by {blog.author}<br /><br />
+              <h1 id="singleBlogTitle">{blog.title}</h1>
+              <Table>
+                <tbody>
+                  <tr>
+                    <td>
+                      url: <a href={blog.url}>
+                        {blog.url}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td> {blog.likes} likes <Button onClick={incrementLikes}>like</Button><br /></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      added by {blog.author}
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
               <form onSubmit={addComment}>
-                <input
-                  id="title"
-                  type="text"
-                  value={comment}
-                  name="Title"
-                  onChange={({ target }) => setComment(target.value)}
-                />
-                <button type="submit">submit comment</button>
+                <Form.Group>
+                  <h4>comment</h4>
+                  <Form.Control
+                    id="title"
+                    type="text"
+                    value={comment}
+                    name="Title"
+                    onChange={({ target }) => setComment(target.value)}
+                  />
+                  <Button variant="primary" type="submit" id="addCommentButton">
+                    Add comment
+                  </Button>
+                </Form.Group>
               </form>
               <h3>comments:</h3>
               <ul>
                 {blog.comments.map((c, index) => <li key={index} >{c}</li>)}
               </ul>
-              {((blog.user && user) && ((blog.user.id === user.id) || (blog.user === user.id))) ? <button onClick={removeBlog} style={{ background: 'red' }}>delete</button> : null}
+              {((blog.user && user) && ((blog.user.id === user.id) || (blog.user === user.id))) ? <Button onClick={removeBlog} style={{ background: 'red' }}>delete</Button> : null}
             </div> :
             <h3>No post with such id exists int he database</h3>
           }
