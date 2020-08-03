@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, updateBlog, deleteBlog } from '../reducers/blogsReducer'
 import { useParams } from 'react-router-dom'
@@ -10,6 +10,9 @@ import { setMessage, removeMessage } from '../reducers/messageReducer'
 
 
 const Blog = () => {
+
+  const [comment, setComment] = useState('')
+
 
   const dispatch = useDispatch()
 
@@ -66,6 +69,10 @@ const Blog = () => {
 
   }
 
+  const addComment = () => {
+    blogService.addComment(comment, blog.id)
+    dispatch(initializeBlogs())
+  }
 
   return (
     <div>
@@ -77,7 +84,17 @@ const Blog = () => {
               <h1>{blog.title}</h1>
               url: <a href={blog.url}>{blog.url}</a><br />
               {blog.likes} likes <button onClick={incrementLikes}>like</button><br />
-              added by {blog.author}<br />
+              added by {blog.author}<br /><br />
+              <form onSubmit={addComment}>
+                <input
+                  id="title"
+                  type="text"
+                  value={comment}
+                  name="Title"
+                  onChange={({ target }) => setComment(target.value)}
+                />
+                <button type="submit">submit comment</button>
+              </form>
               <h3>comments:</h3>
               <ul>
                 {blog.comments.map((c, index) => <li key={index} >{c}</li>)}
