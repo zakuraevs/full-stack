@@ -108,11 +108,24 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      if (args.author) {
+      if (args.author && !args.genre) {
+        console.log("ONLY AUTHOR GIVEN")
         return books.filter(b => b.author === args.author)
-      } else if (args.genre) {
+      } else if (args.genre && !args.author) {
+        console.log("ONLY GENRE GIVEN")
         return books.filter(b => b.genres.includes(args.genre))
+      } else if (args.genre && args.author) {
+        console.log("BOTH GIVEN")
+        const filteredByAuthor = books.filter(b => b.author === args.author)
+        console.log('FILTERED BY AUTHOR: ', filteredByAuthor)
+        const res = filteredByAuthor.filter(b => b.genres.includes(args.genre))
+        console.log('FILTERED BY GENRES TOO: ', res)
+        return res
       } else {
+        console.log("NONE GIVEN")
+        console.log("ARGS: ", args)
+        console.log("args.genre: ", args.genre)
+        console.log("!args.genre: ", !args.genre)
         return books
       }
     },
