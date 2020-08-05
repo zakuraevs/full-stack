@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const { v1: uuid } = require('uuid')
 
 let authors = [
   {
@@ -101,6 +102,15 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book
+  }  
 `
 
 const resolvers = {
@@ -109,23 +119,14 @@ const resolvers = {
     authorCount: () => authors.length,
     allBooks: (root, args) => {
       if (args.author && !args.genre) {
-        console.log("ONLY AUTHOR GIVEN")
         return books.filter(b => b.author === args.author)
       } else if (args.genre && !args.author) {
-        console.log("ONLY GENRE GIVEN")
         return books.filter(b => b.genres.includes(args.genre))
       } else if (args.genre && args.author) {
-        console.log("BOTH GIVEN")
         const filteredByAuthor = books.filter(b => b.author === args.author)
-        console.log('FILTERED BY AUTHOR: ', filteredByAuthor)
         const res = filteredByAuthor.filter(b => b.genres.includes(args.genre))
-        console.log('FILTERED BY GENRES TOO: ', res)
         return res
       } else {
-        console.log("NONE GIVEN")
-        console.log("ARGS: ", args)
-        console.log("args.genre: ", args.genre)
-        console.log("!args.genre: ", !args.genre)
         return books
       }
     },
@@ -133,8 +134,35 @@ const resolvers = {
   },
   Author: {
     bookCount: (root) => {
-      console.log(root)
       return books.filter(b => b.author === root.name).length
+    }
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      console.log('NEW BOOK ARGS: ', args)
+      const book = { ...args, id: uuid() }
+      console.log('NEW BOOK WITH ID: ', book)
+      const author = book.author
+      
+      //if (books.map(b => b.author).includes(author) ) {
+      //  books = books.concat(book)
+      //  console.log('UPDATED BOOKS: ', books)
+      if(!books.map(b => b.author).includes(author)) {
+        const newAuhtorObject = {
+          name: author,
+          born: null,
+          id: uuid()
+        }
+
+        authors = authors.concat(newAuhtorObject)
+
+        console.log("UPDATED AUTHORS: ", authors)
+    
+      }
+
+      books = books.concat(book)
+      
+      return book
     }
   }
 }
