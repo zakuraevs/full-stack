@@ -109,7 +109,11 @@ const typeDefs = gql`
       author: String!
       published: Int!
       genres: [String!]!
-    ): Book
+    ): Book,
+    editAuthor(
+      name: String! 
+      setBornTo: Int!
+    ): Author
   }  
 `
 
@@ -139,31 +143,44 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
-      console.log('NEW BOOK ARGS: ', args)
       const book = { ...args, id: uuid() }
-      console.log('NEW BOOK WITH ID: ', book)
       const author = book.author
       
-      //if (books.map(b => b.author).includes(author) ) {
-      //  books = books.concat(book)
-      //  console.log('UPDATED BOOKS: ', books)
       if(!books.map(b => b.author).includes(author)) {
         const newAuhtorObject = {
           name: author,
           born: null,
           id: uuid()
         }
-
         authors = authors.concat(newAuhtorObject)
 
-        console.log("UPDATED AUTHORS: ", authors)
-    
       }
-
       books = books.concat(book)
       
       return book
+    },
+    editAuthor: (root, args) => {
+      const authorName = args.name
+      const authorInDatabase = authors.find(a => a.name === authorName)
+
+      console.log("authorInDatabase: ", authorInDatabase)
+
+      if(authorInDatabase) {
+
+        authors.map(a => a.name === authorName ? a.born = args.setBornTo : a)
+        console.log("updated authorInDatabase: ", authorInDatabase)
+        console.log("ALL AUTHORS: ", authors)
+
+        return authorInDatabase
+      } else {
+        return null
+      }
     }
+    //editAuthor(
+    //  name: String! 
+    //  setBornTo: Int!
+    //): Author
+
   }
 }
 
