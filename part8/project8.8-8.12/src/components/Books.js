@@ -1,22 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS } from '../queries'
-
-
-//import { FIND_PERSON } from '../queries'
-
+import React from 'react'
 
 const Books = ({books}) => {
 
-  //const books = useQuery(ALL_BOOKS)
 
-  //console.log('BOOKS: ', books.data)
-  //console.log('LOADING: ', books.loading)
-
-
-  //if (books.loading)  {
-  //  return <div>loading...</div>
-  //}
 
   return (
     <div>

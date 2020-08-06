@@ -32,7 +32,7 @@ const App = () => {
   let displayedView
 
   if (view === 'authors') {
-    displayedView = <Authors authors={authors.data.allAuthors}/>
+    displayedView = <Authors authors={authors.data.allAuthors} setError={notify}/>
   } else if (view === 'books') {
     displayedView = <Books books={books.data.allBooks}/>
   } else if (view === 'bookForm') {
