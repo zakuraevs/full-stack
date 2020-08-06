@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
-
+import BookForm from './components/BookForm'
+import Notify from './components/Notify'
 
 import { useQuery } from '@apollo/client';
 import { ALL_AUTHORS, ALL_BOOKS } from './queries'
 
 const App = () => {
 
-  const [ view, setView ] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [view, setView] = useState('authors')
 
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
@@ -20,19 +22,30 @@ const App = () => {
     return <div>loading...</div>
   } 
 
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
+  }
+
   let displayedView
 
   if (view === 'authors') {
     displayedView = <Authors authors={authors.data.allAuthors}/>
   } else if (view === 'books') {
     displayedView = <Books books={books.data.allBooks}/>
+  } else if (view === 'bookForm') {
+    displayedView = <BookForm setError={notify}/>
   }
 
 
   return (
     <div>
+        <Notify errorMessage={errorMessage} />
         <button onClick={() => setView('authors')}>authors</button>
         <button onClick={() => setView('books')}>books</button>
+        <button onClick={() => setView('bookForm')}>add book</button>
         {displayedView}
     </div>
   )
