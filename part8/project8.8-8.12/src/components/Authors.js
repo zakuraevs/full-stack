@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_BORN , ALL_AUTHORS } from '../queries'
+import Select from 'react-select';
 
 
 const Authors = ({ authors, setError }) => {
 
-  const [name, setName] = useState('')
+  const [name, setName] = useState(authors[0].name)
   const [setBornToString, setBorn] = useState('')
 
   const [editAuthor, result] = useMutation(EDIT_BORN, {
@@ -25,7 +26,7 @@ const Authors = ({ authors, setError }) => {
 
     editAuthor({ variables: { name, setBornTo } })
 
-    setName('')
+    setName(authors[0].name)
     setBorn('')
   }
 
@@ -35,6 +36,9 @@ const Authors = ({ authors, setError }) => {
     }
   }, [result.data]) // eslint-disable-line 
 
+  const handleChange = (event) => {
+    setName(event.target.value)
+  }
   
   return (
     <div>
@@ -58,13 +62,14 @@ const Authors = ({ authors, setError }) => {
         </tbody>
       </table>
       <h2>Set birth year</h2>
+      <select onChange={handleChange} value={name}>
+        {authors.map(a => 
+          <option key={a.name} value={a.name}>
+            {a.name}
+          </option>
+        )}
+      </select>
       <form onSubmit={submit}>
-        <div>
-          name<input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
         <div>
           born<input
             value={setBornToString}
