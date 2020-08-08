@@ -5,6 +5,7 @@ query {
   allAuthors  {
     name
     born
+    bookCount
   }
 }
 `
@@ -26,9 +27,9 @@ mutation createBook($title: String!, $author: String!, $published: Int!, $genres
     genres: $genres
   ) {
     title
-    author
     published
     genres
+    author { name }
   }
 }
 `
