@@ -5,8 +5,6 @@ query {
   allAuthors  {
     name
     born
-    bookCount
-    id
   }
 }
 `
@@ -14,7 +12,6 @@ export const ALL_BOOKS= gql`
 query {
   allBooks  {
     title
-    author 
     published
   }
 }

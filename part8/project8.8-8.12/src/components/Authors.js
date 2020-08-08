@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_BORN , ALL_AUTHORS } from '../queries'
-import Select from 'react-select';
 
 
 const Authors = ({ authors, setError }) => {
 
-  const [name, setName] = useState(authors[0].name)
+  const [name, setName] = useState(authors[0].name)//.length > 0 ? authors[0].name : [])
   const [setBornToString, setBorn] = useState('')
 
   const [editAuthor, result] = useMutation(EDIT_BORN, {
