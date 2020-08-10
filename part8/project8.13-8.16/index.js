@@ -94,11 +94,8 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      console.log('ADDING NEW BOOK IS REQUESTED')
-      console.log('ARGS: ', args)
 
       const matchingAuthor = await Author.findOne({ name: args.author})
-      console.log('MATCHING AUTHOR: ', matchingAuthor)
 
       if (matchingAuthor) {
         const book = new Book({
@@ -128,38 +125,21 @@ const resolvers = {
         return book
 
       }
-
-      
-
-
-      
-      
-      //if(!books.map(b => b.author).includes(author)) {
-        //const newAuhtorObject = {
-        //  name: author,
-        //  born: null,
-        //  id: uuid()
-        //}
-        //authors = authors.concat(newAuhtorObject)
-
-      //}
-      //books = books.concat(book)
-      
       
     },
     editAuthor: async (root, args) => {
       const authorName = args.name
-      const authorInDatabase = await Author.findOne({ name: args.name })
+      const updatedAuthor = await Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo})
 
-      //console.log("authorInDatabase: ", authorInDatabase)
+      console.log("authorInDatabase: ", updatedAuthor)
 
-      if(authorInDatabase) {
+      if(updatedAuthor) {
 
         //authors.map(a => a.name === authorName ? a.born = args.setBornTo : a)
         //console.log("updated authorInDatabase: ", authorInDatabase)
         //console.log("ALL AUTHORS: ", authors)
 
-        return authorInDatabase
+        return updatedAuthor
       } else {
         return null
       }
