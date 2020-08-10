@@ -35,7 +35,7 @@ const BookForm = ({ setError }) => {
 
   return (
     <div>
-      <h2>cAdd book</h2>
+      <h2>Add book</h2>
       <form onSubmit={submit}>
         <div>
           title <input value={title}

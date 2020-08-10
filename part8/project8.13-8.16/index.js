@@ -62,40 +62,24 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
-      //if (args.author && !args.genre) {
-      //  return books.filter(b => b.author === args.author)
-      //} else if (args.genre && !args.author) {
-      //  return books.filter(b => b.genres.includes(args.genre))
-      //} else if (args.genre && args.author) {
-      //  const filteredByAuthor = books.filter(b => b.author === args.author)
-      //  const res = filteredByAuthor.filter(b => b.genres.includes(args.genre))
-      //  return res
-      //} else {
-        return Book.find({})
-      //}
+      return Book.find({})
     },
     allAuthors: async () => {
-      //console.log('all authors are requested')
       const authors = await Author.find({})
-      //console.log('RESPONSE: ', authors)
       return authors
-    }  
+    }
   },
   Author: {
     bookCount: async (root) => {
-      //console.log('ROOT: ', root)
       const allBooks = await Book.find({ author: root.id })
-      //console.log('requesting all books')
-      //console.log('AUTHORS BOOKS: ', allBooks)
-      //const filtered = allBooks.filter(b => b.author === root.name).length
-      //console.log('returning ', filtered)
       return allBooks.length
     }
   },
   Mutation: {
     addBook: async (root, args) => {
 
-      const matchingAuthor = await Author.findOne({ name: args.author})
+
+      const matchingAuthor = await Author.findOne({ name: args.author })
 
       if (matchingAuthor) {
         const book = new Book({
@@ -104,7 +88,15 @@ const resolvers = {
           author: matchingAuthor,
           genress: args.genres
         })
-        book.save()
+
+        try {
+          await book.save()
+        } catch (error) {
+          console.log('ERROR: ', error.message)
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        }
         return book
       } else {
         const newAuthor = new Author({
@@ -112,42 +104,47 @@ const resolvers = {
           born: null,
           bookCount: 1
         })
-
-        await newAuthor.save()
-
+        try {
+          await newAuthor.save()
+        } catch (error) {
+          console.log('ERROR: ', error.message)
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        }
         const book = new Book({
           title: args.title,
           published: args.published,
           author: newAuthor,
           genress: args.genres
         })
-        book.save()
+        try {
+          await book.save()
+        } catch (error) {
+          console.log('ERROR: ', error.message)
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        }
         return book
-
       }
-      
+
+
     },
     editAuthor: async (root, args) => {
-      const authorName = args.name
-      const updatedAuthor = await Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo})
+      const updatedAuthor = await Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo })
 
-      console.log("authorInDatabase: ", updatedAuthor)
-
-      if(updatedAuthor) {
-
-        //authors.map(a => a.name === authorName ? a.born = args.setBornTo : a)
-        //console.log("updated authorInDatabase: ", authorInDatabase)
-        //console.log("ALL AUTHORS: ", authors)
-
-        return updatedAuthor
-      } else {
+      try {
+        if (updatedAuthor) {
+          return updatedAuthor
+        }
         return null
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
       }
     }
-    //editAuthor(
-    //  name: String! 
-    //  setBornTo: Int!
-    //): Author
 
   }
 }
