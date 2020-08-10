@@ -14,6 +14,9 @@ query {
   allBooks  {
     title
     published
+    author {
+      name
+    }
   }
 }
 `
@@ -29,7 +32,9 @@ mutation createBook($title: String!, $author: String!, $published: Int!, $genres
     title
     published
     genres
-    author { name }
+    author { 
+      name 
+    }
   }
 }
 `

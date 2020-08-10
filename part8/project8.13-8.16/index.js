@@ -85,8 +85,10 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      return Book.find({})
+    allBooks: async (root, args) => {
+      console.log("ALL BOOKSREQUESTED")
+      const books  = await Book.find({})
+      return books
     },
     allAuthors: async () => {
       const authors = await Author.find({})
@@ -98,8 +100,26 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root) => {
+      
       const allBooks = await Book.find({ author: root.id })
       return allBooks.length
+    }
+  },
+  Book: {
+    author: async (root) => {
+      console.log("AUTHOR OF BOOK REQUESTED")
+
+      //console.log('ROOT: ', root)
+
+      //console.log('OBJ ID: ', root.author)
+      
+      const authInDB = await Author.findById(root.author)
+      console.log("AUTHOR FOUND: ", authInDB)
+      //console.log('AUT FOUND: ', authInDB.name)
+
+      return {
+        name: authInDB.name//root.author
+      }
     }
   },
   Mutation: {
