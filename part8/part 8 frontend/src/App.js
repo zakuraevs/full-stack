@@ -4,9 +4,10 @@ import Books from './components/Books'
 import BookForm from './components/BookForm'
 import Notify from './components/Notify'
 import LoginForm from './components/LoginForm'
+import Recomendations from './components/Recomendations'
 
 import { useQuery, useApolloClient } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, GET_USER } from './queries'
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
 
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
+  const user = useQuery(GET_USER)
   
   const client = useApolloClient()
 
@@ -46,6 +48,8 @@ const App = () => {
     displayedView = <Authors authors={authors.data.allAuthors} setError={notify}/>
   } else if (view === 'books') {
     displayedView = <Books books={books.data.allBooks}/>
+  } else if (view === 'recomendations') {
+    displayedView = <Recomendations setError={notify} user={user.data.me} books={books.data.allBooks}/>
   } else if (view === 'bookForm') {
     displayedView = <BookForm setError={notify}/>
   } 
@@ -70,6 +74,7 @@ const App = () => {
         <button onClick={() => setView('authors')}>authors</button>
         <button onClick={() => setView('books')}>books</button>
         <button onClick={() => setView('bookForm')}>add book</button>
+        <button onClick={() => setView('recomendations')}>recomendations</button>
         <button onClick={logout}>log out</button>
         {displayedView}
     </div>
