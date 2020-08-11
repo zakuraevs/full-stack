@@ -133,11 +133,13 @@ const resolvers = {
       const matchingAuthor = await Author.findOne({ name: args.author })
 
       if (matchingAuthor) {
+        console.log('GENRES: ', args.genres)
+
         const book = new Book({
           title: args.title,
           published: args.published,
           author: matchingAuthor,
-          genress: args.genres
+          genres: args.genres
         })
 
         try {
@@ -163,11 +165,13 @@ const resolvers = {
             invalidArgs: args,
           })
         }
+        console.log('GENRES: ', args.genres)
+
         const book = new Book({
           title: args.title,
           published: args.published,
           author: newAuthor,
-          genress: args.genres
+          genres: args.genres
         })
         try {
           await book.save()

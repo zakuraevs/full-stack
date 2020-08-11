@@ -5,7 +5,11 @@ import { EDIT_BORN , ALL_AUTHORS } from '../queries'
 
 const Authors = ({ authors, setError }) => {
 
-  const [name, setName] = useState(authors[0].name)//.length > 0 ? authors[0].name : [])
+  let initialName
+
+  authors.length > 0 ? initialName = authors[0].name : initialName = ''
+
+  const [name, setName] = useState(initialName)//.length > 0 ? authors[0].name : [])
   const [setBornToString, setBorn] = useState('')
 
   const [editAuthor, result] = useMutation(EDIT_BORN, {
