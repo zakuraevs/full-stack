@@ -11,8 +11,7 @@ mongoose.set('useFindAndModify', false)
 
 const JWT_SECRET = process.env.JWT_SECRET
 
-
-let MONGODB_URI = process.env.MONGODB_URI
+const MONGODB_URI = process.env.MONGODB_URI
 
 console.log('connecting to', MONGODB_URI)
 
@@ -123,7 +122,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
 
       const currentUser = context.currentUser
 
@@ -183,7 +182,7 @@ const resolvers = {
 
 
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
 
       if (!currentUser) {
