@@ -9,14 +9,10 @@ const Books = ({ books }) => {
     return _.union(accumulator, current)
   }
 
-
   const handleChange = (event) => {
     setGenre(event.target.value)
 
   }
-
-
-
 
   return (
     <div>
