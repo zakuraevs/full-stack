@@ -85,9 +85,17 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      console.log("ALL BOOKSREQUESTED")
-      const books  = await Book.find({})
-      return books
+      if( Object.keys(args).length === 0 && args.constructor === Object) {
+        console.log("ALL BOOKSREQUESTED")
+        const books  = await Book.find({})
+        return books
+      }
+
+      console.log('SPECIFIC BOOKS ARE REQUESTED, ARGS: ', args)
+      const booksByGenre = await Book.find({ genres: { $in: [args.genre] } })
+      console.log('Books found: ', booksByGenre)
+      return booksByGenre
+      
     },
     allAuthors: async () => {
       const authors = await Author.find({})
