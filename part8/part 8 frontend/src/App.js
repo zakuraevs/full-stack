@@ -21,7 +21,6 @@ const App = () => {
   const user = useQuery(GET_USER)
   const client = useApolloClient()
 
-
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
 
@@ -145,8 +144,6 @@ const App = () => {
         {displayedView}
     </div>
   )
-
-
 }
 
 export default App

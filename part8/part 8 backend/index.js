@@ -87,8 +87,6 @@ const typeDefs = gql`
   }    
 `
 
-
-
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
