@@ -107,15 +107,12 @@ const resolvers = {
       
     },
     allAuthors: async () => {
+      console.log('ALL AUTHORS QUERY HAS BEEN REQUESTED, N+1 ALERT???')
       const authors = await Author.find({})
       return authors
     },
     me: (root, args, context) => {
-      console.log('ME QUERY HAS BEEN REQUESTED')
-      console.log('ROOT: ', root)
-      console.log('ARGS: ', args)
-      console.log('CONTEXT: ', context)
-      console.log('CONTEXT USER aka return value: ', context.currentUser)
+
       return context.currentUser
     }
   },
@@ -275,7 +272,6 @@ const server = new ApolloServer({
         auth.substring(7), JWT_SECRET
       )
       const currentUser = await User.findById(decodedToken.id)
-      console.log('CONTEXT USER FOUND: ', currentUser)
       return { currentUser }
     }
   }
