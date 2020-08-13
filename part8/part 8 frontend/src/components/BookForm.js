@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client'
 import { ALL_BOOKS, CREATE_BOOK, ALL_AUTHORS } from '../queries'
 
 
-const BookForm = ({ setError }) => {
+const BookForm = ({ setError, updateCacheWith }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [publishedString, setPublished] = useState('')
@@ -17,6 +17,9 @@ const BookForm = ({ setError }) => {
         setError(error.networkError.message)
         : 
         setError(error.graphQLErrors[0].message)
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook)
     }
   })
 

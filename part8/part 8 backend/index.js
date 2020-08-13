@@ -79,6 +79,7 @@ const typeDefs = gql`
       username: String!
       password: String!
     ): Token
+    refetch: String
   }  
 
   type Subscription {
@@ -110,6 +111,11 @@ const resolvers = {
       return authors
     },
     me: (root, args, context) => {
+      console.log('ME QUERY HAS BEEN REQUESTED')
+      console.log('ROOT: ', root)
+      console.log('ARGS: ', args)
+      console.log('CONTEXT: ', context)
+      console.log('CONTEXT USER aka return value: ', context.currentUser)
       return context.currentUser
     }
   },
@@ -166,7 +172,7 @@ const resolvers = {
             invalidArgs: args,
           })
         }
-        pubsub.publish('BOOK_Added', { bookAdded: book })
+        pubsub.publish('BOOK_ADDED', { bookAdded: book })
         return book
       } else {
         const newAuthor = new Author({
@@ -198,7 +204,7 @@ const resolvers = {
             invalidArgs: args,
           })
         }
-        pubsub.publish('BOOK_Added', { bookAdded: book })
+        pubsub.publish('BOOK_ADDED', { bookAdded: book })
         return book
       }
     },
@@ -246,6 +252,9 @@ const resolvers = {
   
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
+    refetch: (root) => {
+      return { response: "Can now refetch" }
+    }
 
   },
   Subscription: {
@@ -266,6 +275,7 @@ const server = new ApolloServer({
         auth.substring(7), JWT_SECRET
       )
       const currentUser = await User.findById(decodedToken.id)
+      console.log('CONTEXT USER FOUND: ', currentUser)
       return { currentUser }
     }
   }
