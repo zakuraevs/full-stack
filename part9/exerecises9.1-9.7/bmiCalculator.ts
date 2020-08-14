@@ -36,7 +36,7 @@ const calculateBmi = (weight: number, height: number): string => {
   } else if (bmi > 30) {
     return 'obese'
   } else {
-    throw new Error('PArameters were incorrect!');
+    throw new Error('Parameters were incorrect!');
   }
 
 }
