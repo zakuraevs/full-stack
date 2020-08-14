@@ -13,18 +13,19 @@ export const parseArguments = (args: Array<string>): BMIValues => {
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
     return {
       weight: Number(args[2]),
-      height: Number(args[3]) * 0.01
+      height: Number(args[3]) 
     }
   } else {
     throw new Error('Provided values were not numbers!');
   }
 }
 
-const calculateBmi = (weight: number, height: number): string => {
+export const calculateBmi = (weight: number, height: number): string => {
 
-  const bmi = (weight / ( height * height))
+  const heightInMeters = height * 0.01
+  const bmi = (weight / ( heightInMeters * heightInMeters))
   console.log('weight: ', weight)
-  console.log('height: ', height)
+  console.log('height: ', heightInMeters)
   console.log('BMI: ', bmi)
 
   if (bmi <= 18.5) {
