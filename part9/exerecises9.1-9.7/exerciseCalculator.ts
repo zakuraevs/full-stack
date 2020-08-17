@@ -17,7 +17,6 @@ const parseArgs = (args: Array<string>): exerciseData => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
   const dailyArgs = args
-  const goal = Number(args[2])
   const dailyArgsNums = dailyArgs.slice(3).map(a => Number(a))
 
   if (!dailyArgsNums.some(e => isNaN(e)) && !isNaN(Number(args[2]))) {
@@ -41,17 +40,21 @@ const calculateExercises = (exerciseTimes: number[], target: number ): ExerciseO
   
   switch(trainingDays) {
     case 0: 
-      rating = 1;
+      rating = 1
+      break
     case 1:
       rating = 2
+      break
     default: rating = 3
   }
 
   switch(rating) {
     case 1: 
-      description = 'poor performance';
+      description = 'poor performance'
+      break
     case 2:
       description = 'goof that you tried, but you can do more'
+      break
     default: description = 'well done'
   }
 
@@ -73,5 +76,6 @@ try {
   const { target, exerciseTimes } = parseArgs(process.argv);
   console.log( calculateExercises(exerciseTimes, target) );
 } catch (e) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   console.log('Error, something bad happened, message: ', e.message);
 }
