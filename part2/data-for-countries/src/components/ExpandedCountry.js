@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import axios from 'axios'
+require('dotenv').config()
 
 const ExpandedCountry = (props) => {
 
@@ -24,7 +25,10 @@ const ExpandedCountry = (props) => {
         axios
           .get(`http://api.weatherstack.com/current`, {params})
           .then(response => {
+            console.log('ENV: ', process.env.REACT_APP_API_KEY )
+            console.log('key: ', api_key)
             console.log('promise fulfilled')
+            console.log('response: ', response)
             props.setWeather(response.data.current)
           })
       }, [])
