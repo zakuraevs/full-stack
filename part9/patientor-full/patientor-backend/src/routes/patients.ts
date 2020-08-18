@@ -7,8 +7,15 @@ router.get('/', (_req, res) => {
   res.send(patientService.getPatients());
 })
 
-router.post('/', (_req, res) => {
-  res.send('Saving a patient!');
-})
+router.post('/', (req, res) => {
+  try {
+    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+
+    const addedPatient = patientService.addPatient({name, dateOfBirth, ssn, gender, occupation} );
+    res.json(addedPatient);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
 
 export default router;
