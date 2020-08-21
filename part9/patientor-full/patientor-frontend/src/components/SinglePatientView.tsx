@@ -6,8 +6,9 @@ import { Patient } from '../types'
 
 const SinglePatientView = ({id}: {id: string}) => {
 
-  
   const [{ patients }, dispatch] = useStateValue();
+
+  const backup = patients[id]
 
   const [ relevantPatient, setRelevantPatient ] = useState(patients[id])
 
@@ -31,14 +32,21 @@ const SinglePatientView = ({id}: {id: string}) => {
   } 
   useEffect(() => {
     getPatient(id)
-  }, [])
+  }, [dispatch])
 
   console.log('updated relevant patient: ', relevantPatient)
-
   
+  if(!relevantPatient) {
+    return (
+      <div>
+         <h2>No such patient found</h2>
+      </div>
+    )
+  }
+
   return (
     <div>
-       <h2>{relevantPatient.name} {relevantPatient.gender}</h2>
+       <h2>{relevantPatient.name} <Icon name={relevantPatient.gender === 'male' ? 'mars' : relevantPatient.gender === 'female' ? 'venus' : 'neuter' }/></h2>
        <div>ssn: {relevantPatient.ssn}</div>
        <div>occupation: {relevantPatient.occupation}</div>
     </div>
