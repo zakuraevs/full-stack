@@ -5,6 +5,8 @@ import toNewPatient from '../utils';
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
+  console.log('got request for URL', req.originalUrl)
+  console.log('someone requested a patientt with id: ', req.params.id)
   const id = req.params.id
 
   const patient = patientService.getPatient(id)
@@ -14,8 +16,6 @@ router.get('/:id', (req, res) => {
   } else {
     res.status(404).json({error: 'patient not found'})
   }
-
-  res.send(patientService.getPatients());
 })
 
 router.get('/', (_req, res) => {
