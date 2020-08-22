@@ -1,4 +1,4 @@
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, Entry } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -50,6 +50,17 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
+const parseEntries = ( entries: Entry[] ): Entry[] => {
+  if (!(entries.every(e => 'type' in e) && 
+    entries.every(e => e['type'] === 'HealthCheck' ||
+    e['type'] === 'OccupationalHealthcare' ||
+    e['type'] === 'Hospital'
+    )
+  )) {
+    throw new Error('Incorrect entry data: ' + entries)
+  }
+  return entries
+}
 
 const toNewPatient = (object: any): NewPatient => {
   return {
@@ -58,7 +69,7 @@ const toNewPatient = (object: any): NewPatient => {
     ssn: parseSSN(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseOccupation(object.occupation),
-    entries: []
+    entries: parseEntries(object.entries)
   };
 }
 
