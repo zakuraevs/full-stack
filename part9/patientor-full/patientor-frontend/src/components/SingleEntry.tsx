@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useStateValue } from "../state";
+import React from 'react';
 import { Icon } from "semantic-ui-react";
-import axios from 'axios'
-import { Patient, Diagnosis, Entry } from '../types'
+import {  Diagnosis, Entry } from '../types'
 import '../App.css'
 
 const SingleEntry = ({ entry, diagnoses }: { entry: Entry, diagnoses: Diagnosis[] }) => {
