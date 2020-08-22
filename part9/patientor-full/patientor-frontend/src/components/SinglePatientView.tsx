@@ -3,6 +3,7 @@ import { useStateValue } from "../state";
 import { Icon } from "semantic-ui-react";
 import axios from 'axios'
 import { Patient, Diagnosis } from '../types'
+import SingleEntry from './SingleEntry';
 
 const SinglePatientView = ({ id }: { id: string }) => {
 
@@ -69,15 +70,7 @@ const SinglePatientView = ({ id }: { id: string }) => {
       <div>occupation: {relevantPatient.occupation}</div>
       <h3>entries</h3>
       {relevantPatient.entries.map((e, i) =>
-        <div key={i}>
-          <div>{e.date} {e.description}</div>
-          {e.diagnosisCodes ?
-            <ul>
-              {e.diagnosisCodes.map((dc,j) => <li key={j}>{dc} { diagnoses.find(d => d.code === dc) ? diagnoses.filter(d => d.code === dc)[0].name : null }</li>)}
-            </ul> : null
-          } 
-
-        </div>
+        <SingleEntry entry={e} diagnoses={diagnoses} key={i}/>
       )}
     </div>
 

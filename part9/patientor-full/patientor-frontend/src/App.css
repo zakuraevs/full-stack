@@ -1,0 +1,14 @@
+.singleEntry {
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 10px;
+}
+
+.entryHeader {
+  font-weight: bold;
+}
+
+.entryDescription {
+  color: #726f6f
+}
