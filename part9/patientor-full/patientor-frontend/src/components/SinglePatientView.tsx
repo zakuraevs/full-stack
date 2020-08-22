@@ -2,39 +2,57 @@ import React, { useState, useEffect } from 'react';
 import { useStateValue } from "../state";
 import { Icon } from "semantic-ui-react";
 import axios from 'axios'
-import { Patient } from '../types'
+import { Patient, Diagnosis } from '../types'
 
 const SinglePatientView = ({ id }: { id: string }) => {
 
   const [{ patients }, dispatch] = useStateValue();
 
-  const backup = patients[id]
-
   const [relevantPatient, setRelevantPatient] = useState(patients[id])
+  const [ diagnoses, setDiagnoses] = useState<Diagnosis[]>([])
 
-  console.log('initial relevant patient: ', patients[id])
-  console.log('initial relevant patient: ', relevantPatient)
+  //console.log('initial relevant patient: ', patients[id])
+  //console.log('initial relevant patient: ', relevantPatient)
 
   const getPatient = async (id: string) => {
-    console.log('requesting patient with id: ', id)
+    //console.log('requesting patient with id: ', id)
     const response = await axios.get<Patient>(`http://localhost:3000/api/patients/${id}`)
 
-    const idOfNew = response.data.id
-    console.log('id of patient from server: ', idOfNew)
+    //const idOfNew = response.data.id
+    //console.log('id of patient from server: ', idOfNew)
 
-    const match: Patient | undefined = patients[idOfNew]
-    console.log('match from local state: ', match)
+    //const match: Patient | undefined = patients[idOfNew]
+    //console.log('match from local state: ', match)
+
+    
 
     setRelevantPatient(response.data)
 
     return response.data
-
   }
+
+  const getDiagnoses = async () => {
+    //console.log('requesting patient with id: ', id)
+    const response = await axios.get<Diagnosis[]>(`http://localhost:3000/api/diagnoses`)
+
+    console.log('diagnoses: ', response.data )
+    console.log('type: ', typeof response.data )
+    //const arData = Array(response.data)
+    
+    setDiagnoses(response.data)
+
+    return response.data
+  }
+
   useEffect(() => {
     getPatient(id)
   }, [dispatch])
 
-  console.log('updated relevant patient: ', relevantPatient)
+  useEffect(() => {
+    getDiagnoses()
+  }, [dispatch])
+
+  //console.log('updated relevant patient: ', relevantPatient)
 
   if (!relevantPatient) {
     return (
@@ -55,7 +73,7 @@ const SinglePatientView = ({ id }: { id: string }) => {
           <div>{e.date} {e.description}</div>
           {e.diagnosisCodes ?
             <ul>
-              {e.diagnosisCodes.map((d,j) => <li key={j}>{d}</li>)}
+              {e.diagnosisCodes.map((dc,j) => <li key={j}>{dc} { diagnoses.find(d => d.code === dc) ? diagnoses.filter(d => d.code === dc)[0].name : null }</li>)}
             </ul> : null
           } 
 
