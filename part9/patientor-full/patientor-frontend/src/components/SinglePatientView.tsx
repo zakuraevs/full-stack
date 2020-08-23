@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useStateValue } from "../state";
 import { Icon, Button, Modal, Segment  } from "semantic-ui-react";
 import axios from 'axios'
-import { Patient, Diagnosis, Entry } from '../types'
+import { Patient, Diagnosis, Entry, EntryNoId } from '../types'
 import SingleEntry from './SingleEntry';
 import AddEntryForm from './AddEntryForm'
+import { setPatients } from "../state/reducer"
+
 
 const SinglePatientView = ({ id }: { id: string }) => {
 
   const [{ patients }, dispatch] = useStateValue();
 
-  const [relevantPatient, setRelevantPatient] = useState(patients[id])
+  const [ relevantPatient, setRelevantPatient] = useState(patients[id])
   const [ diagnoses, setDiagnoses] = useState<Diagnosis[]>([])
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -21,14 +23,15 @@ const SinglePatientView = ({ id }: { id: string }) => {
     onClose: () => void;
     onSubmit: (data: Entry) => void;
     error?: string;
+    diagnoses: Diagnosis[];
   }
 
-  const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
+  const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, diagnoses }: Props) => (
     <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
       <Modal.Header>Add a new enrty</Modal.Header>
       <Modal.Content>
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} />
       </Modal.Content>
     </Modal>
   );
@@ -44,12 +47,30 @@ const SinglePatientView = ({ id }: { id: string }) => {
       console.log('trying to submit new entry')
     try {
       
-       await axios.post<Entry>(
+       await axios.post<EntryNoId>(
         `http://localhost:3000/api/patients/${id}/entries`,
         data
       );
+
+      //const patient = await axios.get<Patient>(`http://localhost:3000/api/patients/${id}`)
+
+      dispatch({type: "ADD_PATIENT", payload: {...relevantPatient, entries: relevantPatient.entries.concat(data)}});
       //dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
+
+      const { data: updPatients } = await axios.get<Patient[]>(
+        `http://localhost:3000/api/patients`
+      )
+      console.log({ type: "SET_PATIENT_LIST", payload: updPatients })
+
+      dispatch(setPatients(updPatients))
+
+      setRelevantPatient(relevantPatient)
+
+      getPatient(id)
+
+      console.log(relevantPatient)
+      console.log('success')
       return
     } catch (e) {
       console.error(e.response.data);
@@ -66,7 +87,7 @@ const SinglePatientView = ({ id }: { id: string }) => {
     const response = await axios.get<Patient>(`http://localhost:3000/api/patients/${id}`)
 
     //const idOfNew = response.data.id
-    //console.log('id of patient from server: ', idOfNew)
+    console.log('DATA: ', response.data)
 
     //const match: Patient | undefined = patients[idOfNew]
     //console.log('match from local state: ', match)
@@ -90,12 +111,25 @@ const SinglePatientView = ({ id }: { id: string }) => {
   }
 
   useEffect(() => {
+    console.log('using getPatient')
     getPatient(id)
-  }, [dispatch])
-
-  useEffect(() => {
     getDiagnoses()
-  }, [dispatch])
+  }, [])
+
+  /*React.useEffect(() => {
+    const fetchPatientList = async () => {
+      try {
+        const { data: patientListFromApi } = await axios.get<Patient[]>(
+          `http://localhost:3000/api/patients`
+        );
+        dispatch(setPatients(patientListFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchPatientList();
+  }, [dispatch]);*/
+  
 
   //console.log('updated relevant patient: ', relevantPatient)
 
@@ -118,12 +152,13 @@ const SinglePatientView = ({ id }: { id: string }) => {
         onSubmit={submitNewEntry}
         error={error}
         onClose={closeModal}
+        diagnoses={diagnoses}
       />
       <Button onClick={() => openModal()}>Add New Entry</Button>
 
-      {relevantPatient.entries.map((e, i) =>
+      {relevantPatient.entries ? relevantPatient.entries.map((e, i) =>
         <SingleEntry entry={e} diagnoses={diagnoses} key={i}/>
-      )}
+      ) : null}
     </div>
 
   )

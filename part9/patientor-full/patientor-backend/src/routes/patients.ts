@@ -50,46 +50,70 @@ router.post('/:id/entries', (req, res) => {
   console.log('data received: ', data)
 
   const validate = (entry: Entry) => {
+
+    console.log(data.type)
+    console.log(data.description)
+    console.log(data.date)
+    console.log(data.specialist)
+
     if(data.type && data.description && data.date && data.specialist ) {
       switch (data.type) {
         case 'HealthCheck': {
-          if(data.healthCheckRating) {
+          if(data.healthCheckRating >= 0 && data.healthCheckRating <= 3) {
+            console.log('were in the health check branch')
             return entry
-          } 
-          break;
+          } else {
+            console.log('were in the else branch 1')
+            return undefined;
+          }
         }
         case 'OccupationalHealthcare': {
           if(data.employerName) {
+            console.log('were in the OccupationalHealthcare check branch')
             return entry
+          } else {
+            console.log('were in the else branch 2')
+            return undefined;
           }
-          break;
         }
         case 'Hospital': {
           if(data.discharge && data.discharge.date && data.discharge.criteria ) {
+            console.log('were in the Hospital check branch')
             return entry
+          } else {
+            console.log('were in the else branch 3')
+            return undefined;
           }
-          break;
         }
         default:
+          console.log('were in the default check branch')
           return undefined;
       }
+    } else {
+      console.log('were in the else branch 4')
+      return undefined;
     }
-    return undefined
-  }
+    
+  } 
 
   const validatedData = validate(data)
 
-  
-
   const patient = patientService.getPatient(id)
 
-  if(patient && validatedData) {
+  console.log('patient: ', patient)
+  console.log('validatedData: ', validatedData)
+
+  if( patient && validatedData) {
     const newEntry = {
       id: String(Math.max(Number(...patients.map(d => d.id))) + 1),
       ...validatedData
     }
 
-    patient.entries.concat(newEntry)
+    console.log('old patient entries: ', patient.entries)
+    console.log('new entry: ', newEntry)
+    patient.entries.push(newEntry)
+    console.log('updated patient entries: ', patient.entries)
+
     res.status(200).json(newEntry)
   } else {
     res.status(400).json({error: 'bad request'})
@@ -99,6 +123,7 @@ router.post('/:id/entries', (req, res) => {
 
 router.post('/', (req, res) => {
   try {
+    console.log('request to add new patient')
     const newPatient = toNewPatient(req.body);
 
     const addedPatient = patientService.addPatient(newPatient);

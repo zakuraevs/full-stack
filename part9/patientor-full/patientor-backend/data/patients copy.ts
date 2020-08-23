@@ -3,7 +3,7 @@ import toNewPatient from "../src/utils";
 
 const data: Patient[] = [
   {
-    id: '11111111111',
+    id: 'd2773336-f723-11e9-8f0b-362b9e155667',
     name: 'John McClane',
     dateOfBirth: '1986-07-09',
     ssn: '090786-122X',
@@ -26,7 +26,7 @@ const data: Patient[] = [
     ],
   },
   {
-    id: '222222222222',
+    id: 'd2773598-f723-11e9-8f0b-362b9e155667',
     name: 'Martin Riggs',
     dateOfBirth: '1979-01-30',
     ssn: '300179-777A',
@@ -34,7 +34,7 @@ const data: Patient[] = [
     occupation: 'Cop',
     entries: [
       {
-        id: '1',
+        id: 'fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62',
         date: '2019-08-05',
         type: 'OccupationalHealthcare',
         specialist: 'MD House',
@@ -50,7 +50,7 @@ const data: Patient[] = [
     ],
   },
   {
-    id: '333333333333333',
+    id: 'd27736ec-f723-11e9-8f0b-362b9e155667',
     name: 'Hans Gruber',
     dateOfBirth: '1970-04-25',
     ssn: '250470-555L',
@@ -59,7 +59,7 @@ const data: Patient[] = [
     entries: [],
   },
   {
-    id: '444444444444',
+    id: 'd2773822-f723-11e9-8f0b-362b9e155667',
     name: 'Dana Scully',
     dateOfBirth: '1974-01-05',
     ssn: '050174-432N',
@@ -67,7 +67,7 @@ const data: Patient[] = [
     occupation: 'Forensic Pathologist',
     entries: [
       {
-        id: '2',
+        id: 'b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da',
         date: '2019-10-20',
         specialist: 'MD House',
         type: 'HealthCheck',
@@ -75,7 +75,7 @@ const data: Patient[] = [
         healthCheckRating: 0,
       },
       {
-        id: '3',
+        id: 'fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62',
         date: '2019-09-10',
         specialist: 'MD House',
         type: 'OccupationalHealthcare',
@@ -83,7 +83,7 @@ const data: Patient[] = [
         description: 'Prescriptions renewed.',
       },
       {
-        id: '4',
+        id: '37be178f-a432-4ba4-aac2-f86810e36a15',
         date: '2018-10-05',
         specialist: 'MD House',
         type: 'HealthCheck',
@@ -94,7 +94,7 @@ const data: Patient[] = [
     ],
   },
   {
-    id: '555555555555555',
+    id: 'd2773c6e-f723-11e9-8f0b-362b9e155667',
     name: 'Matti Luukkainen',
     dateOfBirth: '1971-04-09',
     ssn: '090471-8890',
@@ -102,7 +102,7 @@ const data: Patient[] = [
     occupation: 'Digital evangelist',
     entries: [
       {
-        id: '5',
+        id: '54a8746e-34c4-4cf4-bf72-bfecd039be9a',
         date: '2019-05-01',
         specialist: 'Dr Byte House',
         type: 'HealthCheck',

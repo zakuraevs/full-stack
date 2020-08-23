@@ -1,6 +1,6 @@
 import { State } from "./state";
 import { Patient } from "../types";
-import axios from 'axios'
+
 
 export type Action =
   | {
@@ -13,6 +13,10 @@ export type Action =
     }
   | {
     type: "UPDATE_PATIENT";
+    payload: Patient;
+  }
+  | {
+    type: "ADD_ENTRY";
     payload: Patient;
   };
 
@@ -44,7 +48,15 @@ export const reducer = (state: State, action: Action): State => {
           ...state.patients,
           [action.payload.id]: action.payload
         }
-      }
+      };
+    case "ADD_ENTRY":
+      return {
+        ...state,
+        patients: {
+          ...state.patients,
+          [action.payload.id]: action.payload
+        }
+      };
     default:
       return state;
   }
@@ -52,10 +64,6 @@ export const reducer = (state: State, action: Action): State => {
 
 export const setPatients = (data: any): Action => {
   return {
-    //const patients = await axios.get<Patient[]>(
-    //  `http://localhost:3000/api/patients`
-    //);
-
       type: 'SET_PATIENT_LIST',
       payload: data
 
@@ -66,6 +74,15 @@ export const addPatient = (newObject: any) => {
   return async (dispatch: (arg0: { type: string; data: any; }) => void) => {
     dispatch({
       type: 'ADD_PATIENT',
+      data: newObject,
+    })
+  }
+}
+
+export const addEntry = (newObject: any) => {
+  return async (dispatch: (arg0: { type: string; data: any; }) => void) => {
+    dispatch({
+      type: 'ADD_ENTRY',
       data: newObject,
     })
   }

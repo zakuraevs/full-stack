@@ -28,6 +28,8 @@ const addPatient = ( patient: NewPatient ): Patient => {
     ...patient
   };
 
+  console.log('new id: ', String(newPatient.id))
+
 patients.push(newPatient);
 return newPatient;
 };

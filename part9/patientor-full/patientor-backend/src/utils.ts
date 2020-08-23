@@ -51,7 +51,8 @@ const parseGender = (gender: any): Gender => {
 };
 
 const parseEntries = ( entries: Entry[] ): Entry[] => {
-  if (!(entries.every(e => 'type' in e) && 
+  if(!entries) return []
+  if (entries && !(entries.every(e => 'type' in e) && 
     entries.every(e => e['type'] === 'HealthCheck' ||
     e['type'] === 'OccupationalHealthcare' ||
     e['type'] === 'Hospital'
