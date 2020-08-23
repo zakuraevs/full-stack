@@ -12,24 +12,7 @@ interface Props {
   diagnoses: Diagnosis[]
 }
 
-interface TextProps extends FieldProps {
-  label: string;
-  placeholder: string;
-}
-
-type SelectFieldProps = {
-  name: string;
-  label: string;
-  options: RatingOption[];
-};
-
 const AddHospitalEntryForm: React.FC<Props> = ({ onSubmit, onCancel, diagnoses }) => {
-
-
-  /*const submit = (data: any) => {
-    console.log('trying to submit new entry within AddPatientForm')
-    onSubmit(data)
-  }*/
 
   return (
     <Formik

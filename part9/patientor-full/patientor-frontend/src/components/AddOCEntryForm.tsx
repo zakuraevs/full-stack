@@ -1,9 +1,8 @@
 import React from 'react';
-import { useStateValue } from "../state";
 import { Entry, Diagnosis } from '../types'
 import { Grid, Button } from "semantic-ui-react";
-import { Field, Formik, FieldProps, Form } from "formik";
-import { TextField, SelectField, RatingOption, DiagnosisSelection } from './FormHelper';
+import { Field, Formik, Form } from "formik";
+import { TextField, DiagnosisSelection } from './FormHelper';
 
 
 interface Props {
@@ -12,41 +11,22 @@ interface Props {
   diagnoses: Diagnosis[]
 }
 
-interface TextProps extends FieldProps {
-  label: string;
-  placeholder: string;
-}
-
-type SelectFieldProps = {
-  name: string;
-  label: string;
-  options: RatingOption[];
-};
-
-const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel, diagnoses }) => {
-
-  const ratingOptions: RatingOption[] = [
-    { value: 0, label: "Healthy" },
-    { value: 1, label: "LowRisk" },
-    { value: 2, label: "HighRisk" },
-    { value: 3, label: "CriticalRisk" }
-  ];
-
-  /*const submit = (data: any) => {
-    console.log('trying to submit new entry within AddPatientForm')
-    onSubmit(data)
-  }*/
+const AddOCEntryForm: React.FC<Props> = ({ onSubmit, onCancel, diagnoses }) => {
 
   return (
     <Formik
       initialValues={{
         diagnosisCodes: [],
-        type: 'HealthCheck',
+        type: 'OccupationalHealthcare',
         description: '',
         date: '',
         specialist: '',
         id: '',
-        healthCheckRating: 0
+        sickLeave: {
+          startDate: '',
+          endDate: '',
+        },
+        employerName: ''
       }}
       onSubmit={onSubmit}
       validate={values => {
@@ -90,10 +70,23 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel, diagnoses }) => {
               name="specialist"
               component={TextField}
             />
-            <SelectField
-              label="Health check rating"
-              name="healthCheckRating"
-              options={ratingOptions}
+            <Field
+              label="employer name"
+              placeholder="employer name"
+              name="employerName"
+              component={TextField}
+            />
+            <Field
+              label="sick leave start date"
+              placeholder="sick leave start"
+              name="sickLeave.startDate"
+              component={TextField}
+            />
+            <Field
+              label="sick leave end date"
+              placeholder="sick leave end"
+              name="sickLeave.endDate"
+              component={TextField}
             />
             <Grid>
               <Grid.Column floated="left" width={5}>
@@ -120,4 +113,4 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel, diagnoses }) => {
 
 }
 
-export default AddEntryForm
+export default AddOCEntryForm

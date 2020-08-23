@@ -98,19 +98,10 @@ const SinglePatientView = ({ id }: { id: string }) => {
     }
   };
 
-
-  //console.log('initial relevant patient: ', patients[id])
-  //console.log('initial relevant patient: ', relevantPatient)
-
   const getPatient = async (id: string) => {
-    //console.log('requesting patient with id: ', id)
     const response = await axios.get<Patient>(`http://localhost:3000/api/patients/${id}`)
 
-    //const idOfNew = response.data.id
     console.log('DATA: ', response.data)
-
-    //const match: Patient | undefined = patients[idOfNew]
-    //console.log('match from local state: ', match)
 
     setRelevantPatient(response.data)
 
@@ -118,12 +109,10 @@ const SinglePatientView = ({ id }: { id: string }) => {
   }
 
   const getDiagnoses = async () => {
-    //console.log('requesting patient with id: ', id)
     const response = await axios.get<Diagnosis[]>(`http://localhost:3000/api/diagnoses`)
 
     console.log('diagnoses: ', response.data )
     console.log('type: ', typeof response.data )
-    //const arData = Array(response.data)
     
     setDiagnoses(response.data)
 
@@ -136,22 +125,6 @@ const SinglePatientView = ({ id }: { id: string }) => {
     getDiagnoses()
   }, [])
 
-  /*React.useEffect(() => {
-    const fetchPatientList = async () => {
-      try {
-        const { data: patientListFromApi } = await axios.get<Patient[]>(
-          `http://localhost:3000/api/patients`
-        );
-        dispatch(setPatients(patientListFromApi));
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchPatientList();
-  }, [dispatch]);*/
-  
-
-  //console.log('updated relevant patient: ', relevantPatient)
 
   if (!relevantPatient) {
     return (
