@@ -5,6 +5,8 @@ import axios from 'axios'
 import { Patient, Diagnosis, Entry, EntryNoId } from '../types'
 import SingleEntry from './SingleEntry';
 import AddEntryForm from './AddEntryForm'
+import AddHospitalEntryForm from './AddHospitalEntryForm'
+import AddOCEntryForm from './AddOCEntryForm'
 import { setPatients } from "../state/reducer"
 
 
@@ -15,7 +17,10 @@ const SinglePatientView = ({ id }: { id: string }) => {
   const [ relevantPatient, setRelevantPatient] = useState(patients[id])
   const [ diagnoses, setDiagnoses] = useState<Diagnosis[]>([])
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [HCModalOpen, setHCModalOpen] = useState<boolean>(false);
+  const [HoModalOpen, setHoModalOpen] = useState<boolean>(false);
+  const [OHModalOpen, setOHModalOpen] = useState<boolean>(false);
+
   const [error, setError] = useState<string | undefined>();
 
   interface Props {
@@ -24,22 +29,35 @@ const SinglePatientView = ({ id }: { id: string }) => {
     onSubmit: (data: Entry) => void;
     error?: string;
     diagnoses: Diagnosis[];
+    entryType: string;
   }
 
-  const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, diagnoses }: Props) => (
+  const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, diagnoses, entryType }: Props) => (
     <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
-      <Modal.Header>Add a new enrty</Modal.Header>
+      <Modal.Header>Add a new {entryType} entry</Modal.Header>
       <Modal.Content>
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} />
+        {entryType === 'health check' ? <AddEntryForm onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} /> :
+          entryType === 'hospital' ? <AddHospitalEntryForm onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} /> :
+          <AddOCEntryForm onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} /> }
       </Modal.Content>
     </Modal>
   );
 
-  const openModal = (): void => setModalOpen(true);
+  const openHCModal = (): void => setHCModalOpen(true);
+  const openHoModal = (): void => setHoModalOpen(true);
+  const openOHModal = (): void => setOHModalOpen(true);
 
-  const closeModal = (): void => {
-    setModalOpen(false);
+  const closeHCModal = (): void => {
+    setHCModalOpen(false);
+    setError(undefined);
+  };
+  const closeHoModal = (): void => {
+    setHoModalOpen(false);
+    setError(undefined);
+  };
+  const closeOHModal = (): void => {
+    setOHModalOpen(false);
     setError(undefined);
   };
 
@@ -56,7 +74,9 @@ const SinglePatientView = ({ id }: { id: string }) => {
 
       dispatch({type: "ADD_PATIENT", payload: {...relevantPatient, entries: relevantPatient.entries.concat(data)}});
       //dispatch({ type: "ADD_PATIENT", payload: newPatient });
-      closeModal();
+      closeHCModal();
+      closeHoModal();
+      closeOHModal();
 
       const { data: updPatients } = await axios.get<Patient[]>(
         `http://localhost:3000/api/patients`
@@ -148,13 +168,32 @@ const SinglePatientView = ({ id }: { id: string }) => {
       <div>occupation: {relevantPatient.occupation}</div>
       <h3>entries</h3>
       <AddEntryModal
-        modalOpen={modalOpen}
+        modalOpen={HCModalOpen}
         onSubmit={submitNewEntry}
         error={error}
-        onClose={closeModal}
+        onClose={closeHCModal}
         diagnoses={diagnoses}
+        entryType={'health check'}
       />
-      <Button onClick={() => openModal()}>Add New Entry</Button>
+      <Button onClick={() => openHCModal()}>Add New Health Check Entry</Button>
+      <AddEntryModal
+        modalOpen={HoModalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeHoModal}
+        diagnoses={diagnoses}
+        entryType={'hospital'}
+      />
+      <Button onClick={() => openHoModal()}>Add New Hospital Entry</Button>
+      <AddEntryModal
+        modalOpen={OHModalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeOHModal}
+        diagnoses={diagnoses}
+        entryType={'occupational health'}
+      />
+      <Button onClick={() => openOHModal()}>Add New OC Entry</Button>
 
       {relevantPatient.entries ? relevantPatient.entries.map((e, i) =>
         <SingleEntry entry={e} diagnoses={diagnoses} key={i}/>
